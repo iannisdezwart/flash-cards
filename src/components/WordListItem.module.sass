@@ -1,0 +1,26 @@
+.word-list-item
+	position: relative
+	background-color: #393940
+	margin: .75rem 1rem
+
+	display: grid
+	grid-template-columns: 1fr 1fr
+	grid-gap: .25rem
+
+	border-radius: 5px
+
+	p
+		color: #CBD1DC
+		text-align: center
+
+	&::after
+		content: ''
+		position: absolute
+		top: 0
+		left: 50%
+		transform: translateX(-50%)
+
+		width: .25rem
+		height: 100%
+
+		background-color: #232328
