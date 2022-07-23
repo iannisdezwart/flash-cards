@@ -16,7 +16,8 @@ export default (props: WordListProps) =>
 				<WordListItem
 					front={ card.front }
 					back={ card.back }
-					key={ i } />
+					key={ i }
+				/>
 			)) }
 		</div>
 	)

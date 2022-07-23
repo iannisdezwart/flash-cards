@@ -9,8 +9,9 @@ interface SideSwipableProps
 	RightIcon: any
 	rightIconColour: string
 	rightIconOnClick: React.MouseEventHandler
+	iconSize: number
 	children: React.ReactNode
-	onClick: React.MouseEventHandler
+	onClick?: React.MouseEventHandler
 }
 
 export default (props: SideSwipableProps) =>
@@ -47,9 +48,9 @@ export default (props: SideSwipableProps) =>
 
 		setHasSwiped(Math.abs(translate) > 2)
 
-		if (Math.abs(translate) > 80)
+		if (Math.abs(translate) > props.iconSize)
 		{
-			translate = translate > 0 ? 80 : -80
+			translate = translate > 0 ? props.iconSize : -props.iconSize
 		}
 
 		setTransform({
@@ -72,7 +73,7 @@ export default (props: SideSwipableProps) =>
 			transition: `transform 0.2s ease-in-out`
 		})
 
-		if (Math.abs(translate) < 80)
+		if (Math.abs(translate) < props.iconSize)
 		{
 			setTimeout(() => {
 				setExpanded(false)
@@ -89,7 +90,7 @@ export default (props: SideSwipableProps) =>
 			}, 0)
 
 			setTransform({
-				transform: `translateX(${ translate > 0 ? 80 : -80 }px)`
+				transform: `translateX(${ translate > 0 ? props.iconSize : -props.iconSize }px)`
 			})
 		}
 	}
@@ -128,7 +129,7 @@ export default (props: SideSwipableProps) =>
 			return
 		}
 
-		props.onClick(e)
+		props.onClick?.(e)
 	}
 
 	const swipeMouseStart = (e: React.MouseEvent) => swipeStart(e.clientX)
@@ -139,7 +140,7 @@ export default (props: SideSwipableProps) =>
 	const swipeTouchEnd = (e: React.TouchEvent) => swipeEnd(e.changedTouches[0].clientX)
 
 	return (
-		<div className={ styles.set }
+		<div className={ styles.sideSwipable }
 			onMouseDown={ swipeMouseStart }
 			onMouseMove={ swipeMouseMove }
 			onMouseUp={ swipeMouseEnd }
@@ -147,6 +148,7 @@ export default (props: SideSwipableProps) =>
 			onTouchStart={ swipeTouchStart }
 			onTouchMove={ swipeTouchMove }
 			onTouchEnd={ swipeTouchEnd }
+			style={{ '--icon-size': `${ props.iconSize }px` } as React.CSSProperties}
 		>
 			<div className={ styles.content }
 				style={ { ...transform, ...resetTransition } }

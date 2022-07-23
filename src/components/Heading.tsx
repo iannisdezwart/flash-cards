@@ -5,6 +5,8 @@ interface HeadingProps
 {
 	text: string
 	size?: number
+	leadingIcon?: React.ReactElement
+	trailingIcon?: React.ReactElement
 }
 
 export default (props: HeadingProps) =>
@@ -16,6 +18,10 @@ export default (props: HeadingProps) =>
 	}
 
 	return (
-		<h1 style={ style } className={ styles.heading }>{ props.text }</h1>
+		<div className={ styles.heading }>
+			<div>{ props.leadingIcon }</div>
+			<h1 style={ style }>{ props.text }</h1>
+			<div>{ props.trailingIcon }</div>
+		</div>
 	)
 }
