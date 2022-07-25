@@ -1,0 +1,17 @@
+.draggable-list
+	display: flex
+	flex-direction: column
+
+	.child
+		cursor: pointer
+
+		.child-transform-container
+			display: flow-root // Make it consume 100% height
+
+			&.transition
+				transition: transform 300ms ease
+
+			&.up
+				transform: translateY(-100%)
+			&.down
+				transform: translateY(100%)

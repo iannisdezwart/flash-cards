@@ -1,6 +1,5 @@
 import React from 'react'
 import { navigate, PageProps } from 'gatsby'
-import { FlashCardSetProps } from '../components/FlashCardSet'
 import Heading from '../components/Heading'
 import ActionListItem from '../components/ActionListItem'
 import ActionList from '../components/ActionList'
@@ -8,9 +7,11 @@ import FlashCardsIcon from '../icons/flashcards.svg'
 import LearnIcon from '../icons/learn.svg'
 import TestIcon from '../icons/test.svg'
 import WordList from '../components/WordList'
-import PlusIcon from '../icons/plus.svg'
 import Padding from '../components/Padding'
 import ClickDetector from '../components/ClickDetector'
+import BackIcon from '../icons/back.svg'
+import SvgIcon from '../components/SvgIcon'
+import { FlashCardSetProps } from '../components/FlashCardSet'
 
 export default (props: PageProps) =>
 {
@@ -37,13 +38,12 @@ export default (props: PageProps) =>
 		})
 	}
 
-	const addWord = () =>
-	{
-		console.log('add word')
-	}
-
 	return (<>
-		<Heading text={ set.name } />
+		<Heading text={ set.name } leadingIcon={
+			<ClickDetector onClick={ () => navigate(-1) }>
+				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
+			</ClickDetector>
+		} />
 
 		<ActionList>
 			<ActionListItem icon={ FlashCardsIcon } text='Flashcards' action={ navigateToFlashcards } />
@@ -53,11 +53,10 @@ export default (props: PageProps) =>
 
 		<Padding vertical={ 32 }/>
 
-		<Heading text='Words' size={ 2 } trailingIcon={ <>
-			<ClickDetector onClick={ addWord }>
-				<PlusIcon />
-			</ClickDetector>
-		</> } />
-		<WordList cards={ set.cards } />
+		<WordList words={ set.cards.map(card => ({
+			front: card.front,
+			back: card.back,
+			new: false
+		})) } />
 	</>)
 }

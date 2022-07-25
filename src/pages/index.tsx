@@ -8,12 +8,12 @@ export default () => {
 		{
 			cards: [
 				{
-					front: { lang: 'en-GB', text: 'Cat' },
-					back: { lang: 'ko-KR', text: '고양이' }
+					front: 'Cat',
+					back: '고양이'
 				},
 				{
-					front: { lang: 'en-GB', text: 'Dog' },
-					back: { lang: 'ko-KR', text: '개' }
+					front: 'Dog',
+					back: '개'
 				}
 			],
 			name: 'Animals',
@@ -23,7 +23,7 @@ export default () => {
 	]
 
 	return (<>
-		<Heading text='Sets' />
+		<Heading text='Sets'  />
 		<FlashCardSetList sets={ sets } />
 	</>)
 }

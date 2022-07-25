@@ -1,18 +1,19 @@
 import React from 'react'
-import FlashCard, { FlashCardProps } from './FlashCard'
+import FlashCard from './FlashCard'
 import * as styles from './FlashCardList.module.sass'
+import { FlashCardSetProps } from './FlashCardSet'
 
 interface FlashCardListProps
 {
-	cards: FlashCardProps[]
+	set: FlashCardSetProps
 }
 
 export default (props: FlashCardListProps) => (
 	<div className={ styles.flashCardList }>
-		{ props.cards.map((card, i) => (
+		{ props.set.cards.map((card, i) => (
 			<FlashCard
-				front={ card.front }
-				back={ card.back }
+				front={{ lang: props.set.langFrom, text: card.front }}
+				back={{ lang: props.set.langTo, text: card.back }}
 				key={ i } />
 		)) }
 	</div>

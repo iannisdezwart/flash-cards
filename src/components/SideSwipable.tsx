@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import * as styles from './SideSwipable.module.sass'
 
+export type SideSwipableOnClickAction = 'close' | 'keep-open' | void
+export type SideSwipableOnClickHandler = (e: React.MouseEvent) => SideSwipableOnClickAction
+
+interface Icon
+{
+	Icon: any
+	colour: string
+	onClick: SideSwipableOnClickHandler
+}
+
 interface SideSwipableProps
 {
-	LeftIcon: any
-	leftIconColour: string
-	leftIconOnClick: React.MouseEventHandler
-	RightIcon: any
-	rightIconColour: string
-	rightIconOnClick: React.MouseEventHandler
+	leftIcon?: Icon
+	rightIcon?: Icon
+	floatingIcon?: Icon
 	iconSize: number
 	children: React.ReactNode
 	onClick?: React.MouseEventHandler
@@ -53,6 +60,15 @@ export default (props: SideSwipableProps) =>
 			translate = translate > 0 ? props.iconSize : -props.iconSize
 		}
 
+		if (props.leftIcon == null && translate > 0)
+		{
+			translate = 0
+		}
+		if (props.rightIcon == null && translate < 0)
+		{
+			translate = 0
+		}
+
 		setTransform({
 			transform: `translateX(${ translate }px)`
 		})
@@ -83,7 +99,7 @@ export default (props: SideSwipableProps) =>
 				transform: `translateX(0px)`
 			})
 		}
-		else
+		else if (translate > 0 && props.leftIcon != null || translate < 0 && props.rightIcon != null)
 		{
 			setTimeout(() => {
 				setExpanded(true)
@@ -93,23 +109,42 @@ export default (props: SideSwipableProps) =>
 				transform: `translateX(${ translate > 0 ? props.iconSize : -props.iconSize }px)`
 			})
 		}
-	}
+		else
+		{
+			setTimeout(() => {
+				setExpanded(false)
+			}, 0)
 
-	const iconPressed = (e: React.MouseEvent) =>
-	{
-		e.stopPropagation()
+			setTransform({
+				transform: `translateX(0px)`
+			})
+		}
 	}
 
 	const leftIconOnClick = (e: React.MouseEvent) =>
 	{
 		e.stopPropagation()
-		props.leftIconOnClick(e)
+
+		if (props.leftIcon!.onClick(e))
+		{
+			setExpanded(false)
+			setTransform({
+				transform: `translateX(0px)`
+			})
+		}
 	}
 
 	const rightIconOnClick = (e: React.MouseEvent) =>
 	{
 		e.stopPropagation()
-		props.rightIconOnClick(e)
+
+		if (props.rightIcon!.onClick(e))
+		{
+			setExpanded(false)
+			setTransform({
+				transform: `translateX(0px)`
+			})
+		}
 	}
 
 	const onClick = (e: React.MouseEvent) =>
@@ -140,41 +175,58 @@ export default (props: SideSwipableProps) =>
 	const swipeTouchEnd = (e: React.TouchEvent) => swipeEnd(e.changedTouches[0].clientX)
 
 	return (
-		<div className={ styles.sideSwipable }
-			onMouseDown={ swipeMouseStart }
-			onMouseMove={ swipeMouseMove }
-			onMouseUp={ swipeMouseEnd }
-			onMouseLeave={ swipeMouseEnd }
-			onTouchStart={ swipeTouchStart }
-			onTouchMove={ swipeTouchMove }
-			onTouchEnd={ swipeTouchEnd }
+		<div className={ styles.sideSwipableContainer }
 			style={{ '--icon-size': `${ props.iconSize }px` } as React.CSSProperties}
 		>
-			<div className={ styles.content }
-				style={ { ...transform, ...resetTransition } }
+			<div className={ styles.sideSwipable }
+				onMouseDown={ swipeMouseStart }
+				onMouseMove={ swipeMouseMove }
+				onMouseUp={ swipeMouseEnd }
+				onMouseLeave={ swipeMouseEnd }
+				onTouchStart={ swipeTouchStart }
+				onTouchMove={ swipeTouchMove }
+				onTouchEnd={ swipeTouchEnd }
 			>
-				<div className={ styles.leftIcon }
-					style={{ backgroundColor: props.leftIconColour }}
-					onMouseDown={ iconPressed }
-					onMouseUp={ leftIconOnClick }
+				<div className={ styles.content }
+					style={ { ...transform, ...resetTransition } }
 				>
-					<props.LeftIcon />
-				</div>
+					{ props.leftIcon &&
+						<div className={ styles.leftIcon }
+							style={{ backgroundColor: props.leftIcon.colour }}
+							onMouseDown={ e => e.stopPropagation() }
+							onTouchStart={ e => e.stopPropagation() }
+							onMouseUp={ leftIconOnClick }
+						>
+							<props.leftIcon.Icon />
+						</div>
+					}
 
-				<div className={ styles.inner }
-					onClick={ onClick }
-				>
-					{ props.children }
-				</div>
+					<div className={ styles.inner }
+						onClick={ onClick }
+					>
+						{ props.children }
+					</div>
 
-				<div className={ styles.rightIcon }
-					style={{ backgroundColor: props.rightIconColour }}
-					onMouseDown={ iconPressed }
-					onMouseUp={ rightIconOnClick }
-				>
-					<props.RightIcon />
+					{ props.rightIcon &&
+						<div className={ styles.rightIcon }
+							style={{ backgroundColor: props.rightIcon.colour }}
+							onMouseDown={ e => e.stopPropagation() }
+							onTouchStart={ e => e.stopPropagation() }
+							onMouseUp={ rightIconOnClick }
+						>
+							<props.rightIcon.Icon />
+						</div>
+					}
 				</div>
 			</div>
+			{ props.floatingIcon &&
+				<div className={ styles.floatingIcon }
+					style={{ backgroundColor: props.floatingIcon.colour }}
+					onMouseUp={ props.floatingIcon.onClick }
+				>
+					<props.floatingIcon.Icon />
+				</div>
+			}
 		</div>
 	)
 }

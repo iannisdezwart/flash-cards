@@ -1,43 +1,65 @@
-.side-swipable
-	box-sizing: border-box
+.side-swipable-container
+	position: relative
 
-	background-color: #393940
-	color: #CBD1DC
+	.side-swipable
+		box-sizing: border-box
 
-	border-radius: 0.5rem
-	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1)
+		background-color: #393940
+		color: #CBD1DC
 
-	overflow: hidden
+		border-radius: 0.5rem
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1)
 
-	.content
+		overflow: hidden
+
+		.content
+			display: flex
+			align-items: center
+			justify-content: center
+			cursor: pointer
+
+			.inner
+				display: flex
+				align-items: center
+				justify-content: space-between
+
+				width: 100%
+				user-select: none
+
+			.left-icon
+				left: calc(-1 * var(--icon-size))
+
+			.right-icon
+				right: calc(-1 * var(--icon-size))
+
+			.left-icon, .right-icon
+				position: absolute
+				top: 0
+				display: flex
+				align-items: center
+				justify-content: center
+				width: var(--icon-size)
+				height: 100%
+
+				svg
+					width: calc(0.4 * var(--icon-size))
+					height: calc(0.4 * var(--icon-size))
+	.floating-icon
+		width: var(--icon-size)
+		height: var(--icon-size)
+		border-radius: 50%
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1)
+
+		position: absolute
+		left: calc(100% - 0.3 * var(--icon-size))
+		top: 50%
+		transform: translateY(-50%)
+
 		display: flex
 		align-items: center
 		justify-content: center
 		cursor: pointer
 
-		.inner
-			display: flex
-			align-items: center
-			justify-content: space-between
-
-			width: 100%
-			user-select: none
-
-		.left-icon
-			left: calc(-1 * var(--icon-size))
-
-		.right-icon
-			right: calc(-1 * var(--icon-size))
-
-		.left-icon, .right-icon
-			position: absolute
-			top: 0
-			display: flex
-			align-items: center
-			justify-content: center
-			width: var(--icon-size)
-			height: 100%
-
-			svg
-				width: calc(0.4 * var(--icon-size))
-				height: calc(0.4 * var(--icon-size))
+		svg
+			width: calc(0.4 * var(--icon-size))
+			height: calc(0.4 * var(--icon-size))

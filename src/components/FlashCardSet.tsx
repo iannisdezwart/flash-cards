@@ -1,15 +1,20 @@
 import React from 'react'
 import Flag from './Flag'
-import { FlashCardProps } from './FlashCard'
 import * as styles from './FlashCardSet.module.sass'
 import EditIcon from '../icons/edit.svg'
 import DeleteIcon from '../icons/delete.svg'
 import { navigate } from 'gatsby'
 import SideSwipable from './SideSwipable'
 
+interface Card
+{
+	back: string
+	front: string
+}
+
 export interface FlashCardSetProps
 {
-	cards: FlashCardProps[]
+	cards: Card[]
 	name: string
 	langFrom: string
 	langTo: string
@@ -37,12 +42,11 @@ export default (props: FlashCardSetProps) =>
 	return (
 		<div className={ styles.flashCardSet }>
 			<SideSwipable
-				LeftIcon={ EditIcon }
-				leftIconColour='#88AD64'
-				leftIconOnClick={ editSet }
-				RightIcon={ DeleteIcon }
-				rightIconColour='#EC7272'
-				rightIconOnClick={ deleteSet }
+				rightIcon={{
+					Icon: DeleteIcon,
+					colour: '#EC7272',
+					onClick: deleteSet
+				}}
 				iconSize={ 80 }
 				onClick={ openSet }
 			>
