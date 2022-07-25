@@ -5,6 +5,7 @@ import ClickDetector from './ClickDetector'
 import DraggableList from './DraggableList'
 import PlusIcon from '../icons/plus.svg'
 import { useState } from 'react'
+import { reorder } from '../util/reorder'
 
 interface Word
 {
@@ -57,12 +58,9 @@ export default (props: WordListProps) =>
 
 	const reorderWords = (oldIndex: number, newIndex: number) =>
 	{
-		const wordsBeforeIndex = words.slice(0, oldIndex)
-		const wordsAfterIndex = words.slice(oldIndex + 1)
-		const newWords = [ ...wordsBeforeIndex, ...wordsAfterIndex ]
-		newWords.splice(newIndex, 0, words[oldIndex])
+		setWords(reorder(words, oldIndex, newIndex))
 
-		setWords(newWords)
+		// TODO: Reorder words through API.
 	}
 
 	return ( <>

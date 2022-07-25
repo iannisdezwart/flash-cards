@@ -5,6 +5,7 @@ interface HeadingProps
 {
 	text: string
 	size?: number
+	colour?: string
 	leadingIcon?: React.ReactElement
 	trailingIcon?: React.ReactElement
 }
@@ -12,9 +13,11 @@ interface HeadingProps
 export default (props: HeadingProps) =>
 {
 	const fontSize = props.size || 3
+	const colour = props.colour || '#3C8DEC'
 
-	const style = {
-		fontSize: `${ fontSize }rem`
+	const style: React.CSSProperties = {
+		fontSize: `${ fontSize }rem`,
+		color: colour
 	}
 
 	return (
