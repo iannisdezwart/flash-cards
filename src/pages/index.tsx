@@ -1,4 +1,5 @@
-import React, { createRef } from 'react'
+import { navigate } from 'gatsby'
+import React, { createRef, useState } from 'react'
 import Button from '../components/Button'
 import Heading from '../components/Heading'
 import Padding from '../components/Padding'
@@ -7,6 +8,8 @@ import { request } from '../util/request'
 
 export default () =>
 {
+	const [ inputErr, setInputErr ] = useState<string>()
+
 	const usernameRef = createRef<HTMLInputElement>()
 	const passwordRef = createRef<HTMLInputElement>()
 
@@ -15,13 +18,22 @@ export default () =>
 		const username = usernameRef.current!.value
 		const password = passwordRef.current!.value
 
-		const { token } = await request({
-			endpoint: '/login',
-			method: 'POST',
-			body: { username, password }
-		}) as { token: string }
+		try
+		{
+			const { token } = await request({
+				endpoint: '/login',
+				method: 'POST',
+				body: { username, password }
+			}) as { token: string }
 
-		localStorage.setItem('api-token', token)
+			localStorage.setItem('api-token', token)
+
+			navigate('/sets')
+		}
+		catch (err)
+		{
+			setInputErr(err as string)
+		}
 	}
 
 	const signUp = async () =>
@@ -29,11 +41,28 @@ export default () =>
 		const username = usernameRef.current!.value
 		const password = passwordRef.current!.value
 
-		await request({
-			endpoint: '/signup',
-			method: 'POST',
-			body: { username, password }
-		})
+		try
+		{
+			await request({
+				endpoint: '/signup',
+				method: 'POST',
+				body: { username, password }
+			})
+
+			await logIn()
+		}
+		catch (err)
+		{
+			setInputErr(err as string)
+		}
+	}
+
+	const enterSubmitsForm = (e: React.KeyboardEvent) =>
+	{
+		if (e.key == 'Enter')
+		{
+			logIn()
+		}
 	}
 
 	return (
@@ -42,8 +71,9 @@ export default () =>
 			<Padding vertical={ 16 } />
 			<Heading text='Log in' size={ 2.5 } colour='#CBD1DC' />
 
-			<input ref={ usernameRef } className='big-input' type='text' placeholder='Username' />
-			<input ref={ passwordRef } className='big-input' type='password' placeholder='Password' />
+			<input ref={ usernameRef } className='big-input' type='text' placeholder='Username' onKeyUp={ enterSubmitsForm } />
+			<input ref={ passwordRef } className='big-input' type='password' placeholder='Password' onKeyUp={ enterSubmitsForm } />
+			{ inputErr && <Heading text={ inputErr } size={ 1.25 } colour='#EC7272' /> }
 
 			<div>
 				<Button text='Log in' fgColour='#fff' bgColour='#88AD64' onClick={ logIn } size={ 1.25 } />

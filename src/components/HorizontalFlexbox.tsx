@@ -1,14 +1,14 @@
 import React from 'react'
 import { Property } from 'csstype'
 
-interface VerticalFlexboxProps
+interface HorizontalFlexboxProps
 {
 	children: React.ReactNode
 	mainAxisAlignment?: Property.JustifyContent
 	crossAxisAlignment?: Property.AlignItems
 }
 
-export default (props: VerticalFlexboxProps) =>
+export default (props: HorizontalFlexboxProps) =>
 {
 	const justifyContent = props.mainAxisAlignment || 'center'
 	const alignItems = props.crossAxisAlignment || 'center'
@@ -17,8 +17,7 @@ export default (props: VerticalFlexboxProps) =>
 		<div style={{
 			display: 'flex',
 			justifyContent,
-			alignItems,
-			flexDirection: 'column'
+			alignItems
 		}}>
 			{ props.children }
 		</div>

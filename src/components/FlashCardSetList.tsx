@@ -8,17 +8,26 @@ import PlusIcon from '../icons/plus.svg'
 import SvgIcon from './SvgIcon'
 import { navigate } from 'gatsby'
 import { request } from '../util/request'
+import * as styles from './FlashCardSetList.module.sass'
 
- export default () =>
- {
+export default () =>
+{
 	const [ sets, setSets ] = useState<FlashCardSetProps[]>([])
 
 	const loadSets = async () =>
 	{
+		const apiToken = localStorage.getItem('api-token')
+
+		if (apiToken == null)
+		{
+			navigate('/')
+			return
+		}
+
 		const res = await request({
 			method: 'GET',
 			endpoint: '/sets',
-			apiToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTg4NTk0MDgsInVzZXJuYW1lIjoiSWFubmlzIiwiaWF0IjoxNjU4NzczMDA4fQ.O9kh7QchxH6U9M_VK0CneQ9NVUfUgK5n5DZNIY5Vm90'
+			apiToken
 		}) as FlashCardSetProps[]
 
 		setSets(res)
@@ -44,6 +53,10 @@ import { request } from '../util/request'
 				<SvgIcon Icon={ PlusIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} />
+
+		{ sets.length == 0 &&
+			<p className={ styles.noSets }>You don't have any sets. Tap the plus icon to create your first set!</p>
+		}
 
 		<DraggableList onReorder={ onReorder }>
 			{ sets.map((set, i) => (

@@ -38,5 +38,23 @@ export const request = async (options: RequestOptions) =>
 		headers
 	})
 
-	return await res.json()
+	const read = async () =>
+	{
+		try
+		{
+			return await res.json()
+		}
+		catch
+		{
+			return {}
+		}
+	}
+
+	if (res.status >= 400)
+	{
+		const { err } = await read() as { err: string }
+		throw err
+	}
+
+	return await read()
 }
