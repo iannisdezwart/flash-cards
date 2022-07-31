@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import Speaker from '../icons/speaker.svg'
 import Star from '../icons/star.svg'
+import { Lang } from '../util/langs'
 import * as styles from './FlashCard.module.sass'
 
 interface FlashCardContent
 {
-	lang: string
+	lang: Lang
 	text: string
 }
 

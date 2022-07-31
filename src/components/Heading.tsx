@@ -1,5 +1,6 @@
 import React from 'react'
 import * as styles from './Heading.module.sass'
+import { Property } from 'csstype'
 
 interface HeadingProps
 {
@@ -8,16 +9,19 @@ interface HeadingProps
 	colour?: string
 	leadingIcon?: React.ReactElement
 	trailingIcon?: React.ReactElement
+	align?: Property.TextAlign
 }
 
 export default (props: HeadingProps) =>
 {
 	const fontSize = props.size || 3
 	const colour = props.colour || '#3C8DEC'
+	const textAlign = props.align || 'center'
 
 	const style: React.CSSProperties = {
 		fontSize: `${ fontSize }rem`,
-		color: colour
+		color: colour,
+		textAlign
 	}
 
 	return (

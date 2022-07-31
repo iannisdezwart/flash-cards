@@ -1,20 +1,27 @@
 import React, { createRef, useState } from 'react'
-import { navigate, PageProps } from 'gatsby'
+import { navigate } from 'gatsby'
 import Heading from '../components/Heading'
 import WordList from '../components/WordList'
 import Padding from '../components/Padding'
 import ClickDetector from '../components/ClickDetector'
 import BackIcon from '../icons/back.svg'
+import CheckIcon from '../icons/check.svg'
 import SvgIcon from '../components/SvgIcon'
-import { FlashCardSetProps } from '../components/FlashCardSet'
 import Popup from '../components/Popup'
 import Button from '../components/Button'
 import LangPicker from '../components/LangPicker'
 import HorizontalFlexbox from '../components/HorizontalFlexbox'
+import { Lang } from '../util/langs'
+import FloatingButton from '../components/FloatingButton'
+import { request } from '../util/request'
 
 export default () =>
 {
 	const [ backClicked, setBackClicked ] = useState(false)
+	const [ langFront, setlangFront ] = useState(Lang.unknown)
+	const [ langBack, setlangBack ] = useState(Lang.unknown)
+	const [ saveErr, setSaveErr ] = useState<string>()
+	const [ words, setWords ] = useState([ { front: '', back: '' } ])
 
 	const setNameRef = createRef<HTMLInputElement>()
 
@@ -23,9 +30,48 @@ export default () =>
 		setBackClicked(true)
 	}
 
-	const onLangsPicked = (langFrom: string, langTo: string) =>
+	const onLangsPicked = (langFront: Lang, langBack: Lang) =>
 	{
-		
+		setlangFront(langFront)
+		setlangBack(langBack)
+	}
+
+	const saveSet = async () =>
+	{
+		const apiToken = localStorage.getItem('api-token')
+
+		if (apiToken == null)
+		{
+			// TODO: Save state somehow.
+			navigate('/')
+			return
+		}
+
+		try
+		{
+			await request({
+				method: 'POST',
+				endpoint: '/sets',
+				apiToken,
+				body: {
+					name: setNameRef.current!.value,
+					localeFront: langFront.locale,
+					localeBack: langBack.locale,
+					cards: words
+				}
+			})
+
+			navigate('/sets')
+		}
+		catch (err)
+		{
+			setSaveErr(err as string)
+		}
+	}
+
+	const wordsChanged = (words: { front: string, back: string }[]) =>
+	{
+		setWords(words)
 	}
 
 	return (<>
@@ -43,7 +89,7 @@ export default () =>
 
 		<Padding vertical={ 32 }/>
 
-		<WordList words={ [{
+		<WordList langFront={ langFront } langBack={ langBack } onChange={ wordsChanged } words={ [{
 			front: '',
 			back: '',
 			new: true
@@ -56,5 +102,11 @@ export default () =>
 				<Button bgColour='#EC7272' fgColour='#fff' text='Discard set' onClick={ () => navigate(-1) }></Button>
 			</HorizontalFlexbox>
 		</Popup>
+
+		<Popup visible={ saveErr != null } title='Error'>
+			<Heading text={ saveErr! } size={ 1 } colour='#CBD1DC' />
+		</Popup>
+
+		<FloatingButton Icon={ CheckIcon } colour='#88AD64' onClick={ saveSet } />
 	</>)
 }

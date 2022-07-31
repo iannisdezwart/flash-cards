@@ -6,11 +6,18 @@ import CheckIcon from '../icons/check.svg'
 import * as styles from './WordListItem.module.sass'
 import Popup from './Popup'
 import Button from './Button'
+import { Lang } from '../util/langs'
+
+interface Card
+{
+	lang: Lang
+	text: string
+}
 
 interface WordListItemProps
 {
-	front: string
-	back: string
+	front: Card
+	back: Card
 	new: boolean
 	onChange: (newFront: string, newBack: string, type: 'new-word' | 'update-word') => void
 }
@@ -43,7 +50,7 @@ export default (props: WordListItemProps) =>
 			return
 		}
 
-		if (props.front != frontInput || props.back != backInput)
+		if (props.front.text != frontInput || props.back.text != backInput)
 		{
 			props.onChange(frontInput, backInput, 'update-word')
 		}
@@ -70,8 +77,8 @@ export default (props: WordListItemProps) =>
 	const generateInnerInNormalMode = () =>
 	{
 		return (<>
-			<p>{ props.front }</p>
-			<p>{ props.back }</p>
+			<p>{ props.front.text }</p>
+			<p>{ props.back.text }</p>
 		</>)
 	}
 
@@ -86,8 +93,8 @@ export default (props: WordListItemProps) =>
 		}
 
 		return (<>
-			<input type="text" defaultValue={ props.front } ref={ frontInputRef } onKeyUp={ enterCapture }/>
-			<input type="text" defaultValue={ props.back } ref={ backInputRef } onKeyUp={ enterCapture }/>
+			<input type="text" defaultValue={ props.front.text } placeholder={ `Enter ${ props.front.lang.name }...` } ref={ frontInputRef } onKeyUp={ enterCapture }/>
+			<input type="text" defaultValue={ props.back.text } placeholder={ `Enter ${ props.back.lang.name }...` } ref={ backInputRef } onKeyUp={ enterCapture }/>
 		</>)
 	}
 

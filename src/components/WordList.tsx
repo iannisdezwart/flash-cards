@@ -6,6 +6,7 @@ import DraggableList from './DraggableList'
 import PlusIcon from '../icons/plus.svg'
 import { useState } from 'react'
 import { reorder } from '../util/reorder'
+import { Lang } from '../util/langs'
 
 interface Word
 {
@@ -17,11 +18,20 @@ interface Word
 export interface WordListProps
 {
 	words: Word[]
+	langFront: Lang
+	langBack: Lang
+	onChange?: (words: { front: string, back: string }[]) => void
 }
 
 export default (props: WordListProps) =>
 {
-	const [ words, setWords ] = useState(props.words)
+	const [ words, _setWords ] = useState(props.words)
+
+	const setWords = (words: Word[]) =>
+	{
+		props.onChange?.(words.map(word => ({ front: word.front, back: word.back })))
+		_setWords(words)
+	}
 
 	const addWord = () =>
 	{
@@ -73,8 +83,8 @@ export default (props: WordListProps) =>
 		<DraggableList onReorder={ reorderWords }>
 			{ words.map((word, i) => (
 				<WordListItem
-					front={ word.front }
-					back={ word.back }
+					front={{ text: word.front, lang: props.langFront }}
+					back={{ text: word.back, lang: props.langBack }}
 					new={ word.new }
 					key={ i }
 					onChange={ (newFront, newBack, type) => updateWord(i, newFront, newBack, type) }

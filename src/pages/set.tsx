@@ -53,7 +53,7 @@ export default (props: PageProps) =>
 
 		<Padding vertical={ 32 }/>
 
-		<WordList words={ set.cards.map(card => ({
+		<WordList langFront={ set.langFront } langBack={ set.langBack } words={ set.cards.map(card => ({
 			front: card.front,
 			back: card.back,
 			new: false

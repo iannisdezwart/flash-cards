@@ -12,8 +12,8 @@ export default (props: FlashCardListProps) => (
 	<div className={ styles.flashCardList }>
 		{ props.set.cards.map((card, i) => (
 			<FlashCard
-				front={{ lang: props.set.langFrom, text: card.front }}
-				back={{ lang: props.set.langTo, text: card.back }}
+				front={{ lang: props.set.langFront, text: card.front }}
+				back={{ lang: props.set.langBack, text: card.back }}
 				key={ i } />
 		)) }
 	</div>

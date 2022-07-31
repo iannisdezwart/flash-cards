@@ -9,6 +9,19 @@ import SvgIcon from './SvgIcon'
 import { navigate } from 'gatsby'
 import { request } from '../util/request'
 import * as styles from './FlashCardSetList.module.sass'
+import { Lang, Locale } from '../util/langs'
+
+interface SetModel
+{
+	name: string
+	user: string
+	localeFront: Locale
+	localeBack: Locale
+	cards: {
+		front: string
+		back: string
+	}[]
+}
 
 export default () =>
 {
@@ -28,9 +41,14 @@ export default () =>
 			method: 'GET',
 			endpoint: '/sets',
 			apiToken
-		}) as FlashCardSetProps[]
+		}) as SetModel[]
 
-		setSets(res)
+		setSets(res.map(set => ({
+			name: set.name,
+			cards: set.cards,
+			langFront: Lang.fromLocale(set.localeFront)!,
+			langBack: Lang.fromLocale(set.localeBack)!
+		})))
 	}
 
 	useEffect(() => { loadSets() }, [])
@@ -63,8 +81,8 @@ export default () =>
 				<FlashCardSet
 					cards={ set.cards }
 					name={ set.name }
-					langFrom={ set.langFrom }
-					langTo={ set.langTo }
+					langFront={ set.langFront }
+					langBack={ set.langBack }
 					key={ i } />
 			)) }
 		</DraggableList>

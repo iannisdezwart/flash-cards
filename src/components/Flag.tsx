@@ -4,7 +4,7 @@ import * as styles from './Flag.module.sass'
 
 interface FlagProps
 {
-	lang: string
+	locale: string
 	size?: number
 }
 
@@ -13,7 +13,7 @@ const flags = new Map(countryCodes.map(country => [ country, require(`../icons/f
 export default (props: FlagProps) =>
 {
 	const size = props.size || 1
-	const Icon = flags.get(props.lang.slice(-2) as CountryCode) || flags.get('XX')
+	const Icon = flags.get(props.locale.slice(-2) as CountryCode) || flags.get('XX')
 
 	return (
 		<div className={ styles.flagIcon } style={{ '--size': size } as React.CSSProperties}>

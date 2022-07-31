@@ -1,10 +1,10 @@
 import React from 'react'
 import Flag from './Flag'
 import * as styles from './FlashCardSet.module.sass'
-import EditIcon from '../icons/edit.svg'
 import DeleteIcon from '../icons/delete.svg'
 import { navigate } from 'gatsby'
 import SideSwipable from './SideSwipable'
+import { Lang } from '../util/langs'
 
 interface Card
 {
@@ -16,17 +16,12 @@ export interface FlashCardSetProps
 {
 	cards: Card[]
 	name: string
-	langFrom: string
-	langTo: string
+	langFront: Lang
+	langBack: Lang
 }
 
 export default (props: FlashCardSetProps) =>
 {
-	const editSet = () =>
-	{
-		console.log('edit set')
-	}
-
 	const deleteSet = () =>
 	{
 		console.log('delete set')
@@ -51,9 +46,9 @@ export default (props: FlashCardSetProps) =>
 				onClick={ openSet }
 			>
 				<div className={ styles.inner }>
-					<Flag lang={ props.langFrom } />
+					<Flag locale={ props.langFront.locale } />
 					<p className={ styles.name }>{ props.name }</p>
-					<Flag lang={ props.langTo } />
+					<Flag locale={ props.langBack.locale } />
 				</div>
 			</SideSwipable>
 		</div>
