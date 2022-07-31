@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as styles from './SideSwipable.module.sass'
 
-export type SideSwipableOnClickAction = 'close' | 'keep-open' | void
+export type SideSwipableOnClickAction = 'close' | 'keep-open' | void | Promise<void>
 export type SideSwipableOnClickHandler = (e: React.MouseEvent) => SideSwipableOnClickAction
 
 interface Icon

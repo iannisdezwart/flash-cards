@@ -28,11 +28,11 @@ export default (props: FlashCardSetProps) =>
 	const [ isDeleted, setDeleted ] = useState(false)
 	const [ deleteSetErr, setDeleteSetErr ] = useState<string>()
 
-	const deleteSet = () =>
+	const deleteSet = async () =>
 	{
 		try
 		{
-			api.sets.delete({
+			await api.sets.delete({
 				setName: props.name
 			})
 
@@ -40,7 +40,7 @@ export default (props: FlashCardSetProps) =>
 		}
 		catch (err)
 		{
-
+			setDeleteSetErr(err as string)
 		}
 	}
 
@@ -74,7 +74,7 @@ export default (props: FlashCardSetProps) =>
 				</div>
 			</SideSwipable>
 
-			<Popup visible={ deleteSetErr != null } title='Error loading sets'>
+			<Popup visible={ deleteSetErr != null } title='Error deleting set'>
 				<Heading size={ 1 } colour='#CBD1DC' text={ deleteSetErr! } />
 			</Popup>
 		</div>

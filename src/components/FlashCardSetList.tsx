@@ -46,8 +46,7 @@ export default () =>
 	const onReorder = (oldIndex: number, newIndex: number) =>
 	{
 		setSets(reorder(sets, oldIndex, newIndex))
-
-		// TODO: Reorder sets through API.
+		api.sets.reorder(oldIndex, newIndex)
 	}
 
 	return ( <>

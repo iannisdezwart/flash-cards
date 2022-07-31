@@ -1,6 +1,6 @@
 interface RequestOptions
 {
-	method: 'GET' | 'POST' | 'DELETE'
+	method: 'GET' | 'POST' | 'DELETE' | 'PATCH'
 	endpoint: string
 	body?: any
 	query?: { [ param: string ]: string }

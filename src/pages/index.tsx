@@ -1,6 +1,7 @@
 import { navigate } from 'gatsby'
-import React, { createRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import api from '../api'
+import validateToken from '../api/auth/validate-token'
 import Button from '../components/Button'
 import Heading from '../components/Heading'
 import Padding from '../components/Padding'
@@ -13,6 +14,20 @@ export default () =>
 	const usernameRef = createRef<HTMLInputElement>()
 	const passwordRef = createRef<HTMLInputElement>()
 
+	useEffect(() =>
+	{
+		if (localStorage.getItem('api-token') != null)
+		{
+			(async () =>
+			{
+				if (await validateToken())
+				{
+					navigate('/sets')
+				}
+			})()
+		}
+	}, [])
+
 	const logIn = async () =>
 	{
 		const username = usernameRef.current!.value
@@ -20,7 +35,7 @@ export default () =>
 
 		try
 		{
-			api.auth.login(username, password)
+			await api.auth.login(username, password)
 			navigate('/sets')
 		}
 		catch (err)
@@ -36,7 +51,7 @@ export default () =>
 
 		try
 		{
-			api.auth.signup(username, password)
+			await api.auth.signup(username, password)
 			await logIn()
 		}
 		catch (err)

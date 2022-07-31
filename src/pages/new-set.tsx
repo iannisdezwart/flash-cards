@@ -49,7 +49,7 @@ export default () =>
 
 		try
 		{
-			api.sets.new({
+			await api.sets.new({
 				name: setNameRef.current!.value,
 				localeFront: langFront.locale,
 				localeBack: langBack.locale,
