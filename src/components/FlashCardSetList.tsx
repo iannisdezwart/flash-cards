@@ -21,13 +21,14 @@ export default () =>
 	{
 		try
 		{
-			const sets = await api.sets.getAll()
+			const allSets = await api.sets.getAll()
 
-			setSets(sets.map(set => ({
+			setSets(allSets.map(set => ({
 				name: set.name,
 				cards: set.cards,
 				langFront: Lang.fromLocale(set.localeFront)!,
-				langBack: Lang.fromLocale(set.localeBack)!
+				langBack: Lang.fromLocale(set.localeBack)!,
+				onDelete: () => setSets(sets.filter(s => s.name != set.name))
 			})))
 		}
 		catch (err)
@@ -67,6 +68,7 @@ export default () =>
 					name={ set.name }
 					langFront={ set.langFront }
 					langBack={ set.langBack }
+					onDelete={ set.onDelete }
 					key={ i } />
 			)) }
 		</DraggableList>

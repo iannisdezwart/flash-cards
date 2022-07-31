@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import * as styles from './ScrollableList.module.sass'
 import { Property } from 'csstype'
 
@@ -9,14 +9,14 @@ interface ScrollableListProps
 	children: React.ReactNode
 }
 
-export default (props: ScrollableListProps) =>
+export default forwardRef((props: ScrollableListProps, ref: React.Ref<HTMLDivElement>) =>
 {
 	const width = props.width || ''
 	const height = props.height || ''
 
 	return (
-		<div className={ styles.scrollableList } style={{ width, height }}>
+		<div ref={ ref } className={ styles.scrollableList } style={{ width, height }}>
 			{ props.children }
 		</div>
 	)
-}
+})

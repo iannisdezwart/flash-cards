@@ -83,7 +83,7 @@ export default (props: FlashCardProps) =>
 	{
 		e.stopPropagation()
 
-		// ...
+		// TODO: Implement.
 	}
 
 	return (

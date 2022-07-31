@@ -17,7 +17,7 @@ interface LangPickerProps
 
 export default (props: LangPickerProps) =>
 {
-	const [ langBeingEdited, setLangBeingEdited ] = useState<'from' | 'to'>()
+	const [ langBeingEdited, _setLangBeingEdited ] = useState<'from' | 'to'>()
 	const [ langFront, setlangFront ] = useState(Lang.unknown)
 	const [ langBack, setlangBack ] = useState(Lang.unknown)
 	const [ pickableLangs, setPickableLangs ] = useState<Lang[]>(Lang.all)
@@ -39,22 +39,32 @@ export default (props: LangPickerProps) =>
 				break
 		}
 
-		setLangBeingEdited(undefined)
+		_setLangBeingEdited(undefined)
 	}
 
-	const chooselangFront = () => setLangBeingEdited('from')
-	const chooselangBack = () => setLangBeingEdited('to')
+	const scrollableListRef = createRef<HTMLDivElement>()
+
+	const setLangBeingEdited = (langBeingEdited: 'from' | 'to') =>
+	{
+		scrollableListRef.current!.scrollTo({ top: 0 })
+		pickerSearchRef.current!.value = ''
+		updatePickerSearch()
+		_setLangBeingEdited(langBeingEdited)
+	}
+
+	const chooseLangFront = () => setLangBeingEdited('from')
+	const chooseLangBack = () => setLangBeingEdited('to')
 
 	const updatePickerSearch = () =>
 	{
 		const input = pickerSearchRef.current!.value
 
-		setPickableLangs(Lang.all.filter(lang => lang.name.toLowerCase().includes(input.toLowerCase())))
+		setPickableLangs(Lang.all.filter(lang => (lang.name.toLowerCase() + lang.details?.toLowerCase() || '').includes(input.toLowerCase())))
 	}
 
 	return (
 		<HorizontalFlexbox>
-			<ClickDetector onClick={ chooselangFront }>
+			<ClickDetector onClick={ chooseLangFront }>
 				<Flag locale={ langFront.locale } size={ 1.5 } />
 			</ClickDetector>
 
@@ -62,13 +72,13 @@ export default (props: LangPickerProps) =>
 			<SvgIcon Icon={ ArrowRightIcon } height={ 32 } />
 			<Padding horizontal={ 32 } />
 
-			<ClickDetector onClick={ chooselangBack }>
+			<ClickDetector onClick={ chooseLangBack }>
 				<Flag locale={ langBack.locale } size={ 1.5 } />
 			</ClickDetector>
 
 			<Popup title='Choose language' visible={ langBeingEdited != null }>
 				<input ref={ pickerSearchRef } className='full-width dark' placeholder='Search...' onChange={ updatePickerSearch } />
-				<ScrollableList height='70vh' width='300px'>
+				<ScrollableList ref={ scrollableListRef } height='70vh' width='300px'>
 					{ pickableLangs.map((lang, i) => (
 						<HorizontalFlexbox key={ i } mainAxisAlignment={ 'flex-start' } fill={ true }>
 							<ClickDetector onClick={ () => chooseLang(lang) }>

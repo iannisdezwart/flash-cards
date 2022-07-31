@@ -21,11 +21,11 @@ export interface FlashCardSetProps
 	name: string
 	langFront: Lang
 	langBack: Lang
+	onDelete?: () => void
 }
 
 export default (props: FlashCardSetProps) =>
 {
-	const [ isDeleted, setDeleted ] = useState(false)
 	const [ deleteSetErr, setDeleteSetErr ] = useState<string>()
 
 	const deleteSet = async () =>
@@ -36,7 +36,7 @@ export default (props: FlashCardSetProps) =>
 				setName: props.name
 			})
 
-			setDeleted(true)
+			props.onDelete?.()
 		}
 		catch (err)
 		{
@@ -47,11 +47,6 @@ export default (props: FlashCardSetProps) =>
 	const openSet = () =>
 	{
 		navigate(`/set?name=${ props.name }`)
-	}
-
-	if (isDeleted)
-	{
-		return null
 	}
 
 	return (
