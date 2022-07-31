@@ -7,48 +7,33 @@ import Heading from '../components/Heading'
 import PlusIcon from '../icons/plus.svg'
 import SvgIcon from './SvgIcon'
 import { navigate } from 'gatsby'
-import { request } from '../util/request'
 import * as styles from './FlashCardSetList.module.sass'
-import { Lang, Locale } from '../util/langs'
-
-interface SetModel
-{
-	name: string
-	user: string
-	localeFront: Locale
-	localeBack: Locale
-	cards: {
-		front: string
-		back: string
-	}[]
-}
+import { Lang } from '../util/langs'
+import api from '../api'
+import Popup from './Popup'
 
 export default () =>
 {
 	const [ sets, setSets ] = useState<FlashCardSetProps[]>([])
+	const [ loadSetsError, setLoadSetsError ] = useState<string>()
 
 	const loadSets = async () =>
 	{
-		const apiToken = localStorage.getItem('api-token')
-
-		if (apiToken == null)
+		try
 		{
-			navigate('/')
-			return
+			const sets = await api.sets.get()
+
+			setSets(sets.map(set => ({
+				name: set.name,
+				cards: set.cards,
+				langFront: Lang.fromLocale(set.localeFront)!,
+				langBack: Lang.fromLocale(set.localeBack)!
+			})))
 		}
-
-		const res = await request({
-			method: 'GET',
-			endpoint: '/sets',
-			apiToken
-		}) as SetModel[]
-
-		setSets(res.map(set => ({
-			name: set.name,
-			cards: set.cards,
-			langFront: Lang.fromLocale(set.localeFront)!,
-			langBack: Lang.fromLocale(set.localeBack)!
-		})))
+		catch (err)
+		{
+			setLoadSetsError(err as string)
+		}
 	}
 
 	useEffect(() => { loadSets() }, [])
@@ -86,5 +71,9 @@ export default () =>
 					key={ i } />
 			)) }
 		</DraggableList>
+
+		<Popup visible={ loadSetsError != null } title='Error loading sets'>
+			<Heading size={ 1 } colour='#CBD1DC' text={ loadSetsError! } />
+		</Popup>
 	</> )
 }

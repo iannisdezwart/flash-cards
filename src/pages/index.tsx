@@ -1,10 +1,10 @@
 import { navigate } from 'gatsby'
 import React, { createRef, useState } from 'react'
+import api from '../api'
 import Button from '../components/Button'
 import Heading from '../components/Heading'
 import Padding from '../components/Padding'
 import VerticalFlexbox from '../components/VerticalFlexbox'
-import { request } from '../util/request'
 
 export default () =>
 {
@@ -20,14 +20,7 @@ export default () =>
 
 		try
 		{
-			const { token } = await request({
-				endpoint: '/login',
-				method: 'POST',
-				body: { username, password }
-			}) as { token: string }
-
-			localStorage.setItem('api-token', token)
-
+			api.auth.login(username, password)
 			navigate('/sets')
 		}
 		catch (err)
@@ -43,12 +36,7 @@ export default () =>
 
 		try
 		{
-			await request({
-				endpoint: '/signup',
-				method: 'POST',
-				body: { username, password }
-			})
-
+			api.auth.signup(username, password)
 			await logIn()
 		}
 		catch (err)

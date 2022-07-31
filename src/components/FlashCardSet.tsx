@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Flag from './Flag'
 import * as styles from './FlashCardSet.module.sass'
 import DeleteIcon from '../icons/delete.svg'
 import { navigate } from 'gatsby'
 import SideSwipable from './SideSwipable'
 import { Lang } from '../util/langs'
+import api from '../api'
+import Popup from './Popup'
+import Heading from './Heading'
 
 interface Card
 {
@@ -22,9 +25,23 @@ export interface FlashCardSetProps
 
 export default (props: FlashCardSetProps) =>
 {
+	const [ isDeleted, setDeleted ] = useState(false)
+	const [ deleteSetErr, setDeleteSetErr ] = useState<string>()
+
 	const deleteSet = () =>
 	{
-		console.log('delete set')
+		try
+		{
+			api.sets.delete({
+				setName: props.name
+			})
+
+			setDeleted(true)
+		}
+		catch (err)
+		{
+
+		}
 	}
 
 	const openSet = () =>
@@ -32,6 +49,11 @@ export default (props: FlashCardSetProps) =>
 		navigate(`/set`, {
 			state: props
 		})
+	}
+
+	if (isDeleted)
+	{
+		return null
 	}
 
 	return (
@@ -51,6 +73,10 @@ export default (props: FlashCardSetProps) =>
 					<Flag locale={ props.langBack.locale } />
 				</div>
 			</SideSwipable>
+
+			<Popup visible={ deleteSetErr != null } title='Error loading sets'>
+				<Heading size={ 1 } colour='#CBD1DC' text={ deleteSetErr! } />
+			</Popup>
 		</div>
 	)
 }

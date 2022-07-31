@@ -13,7 +13,7 @@ import LangPicker from '../components/LangPicker'
 import HorizontalFlexbox from '../components/HorizontalFlexbox'
 import { Lang } from '../util/langs'
 import FloatingButton from '../components/FloatingButton'
-import { request } from '../util/request'
+import api from '../api'
 
 export default () =>
 {
@@ -49,18 +49,12 @@ export default () =>
 
 		try
 		{
-			await request({
-				method: 'POST',
-				endpoint: '/sets',
-				apiToken,
-				body: {
-					name: setNameRef.current!.value,
-					localeFront: langFront.locale,
-					localeBack: langBack.locale,
-					cards: words
-				}
+			api.sets.new({
+				name: setNameRef.current!.value,
+				localeFront: langFront.locale,
+				localeBack: langBack.locale,
+				cards: words
 			})
-
 			navigate('/sets')
 		}
 		catch (err)
