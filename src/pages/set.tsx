@@ -47,7 +47,7 @@ export default (props: PageProps) =>
 		setlangBack(setProps.langBack)
 	}
 
-	return (<>
+	return ( <>
 		<Heading text={ setName } leadingIcon={
 			<ClickDetector onClick={ () => navigate(-1) }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
@@ -69,5 +69,5 @@ export default (props: PageProps) =>
 			words={ [] }
 			onLoad={ onWordListLoad }
 		/>
-	</>)
+	</> )
 }

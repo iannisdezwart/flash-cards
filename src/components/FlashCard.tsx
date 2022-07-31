@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import api from '../api'
 import Speaker from '../icons/speaker.svg'
 import Star from '../icons/star.svg'
 import { Lang } from '../util/langs'
@@ -56,14 +57,15 @@ export default (props: FlashCardProps) =>
 	{
 		e.stopPropagation()
 
-		const audioCtx = new AudioContext()
-		const url = `http://localhost:1337/tts?text=${ getText() }&lang=${ getLang() }`
-
 		try
 		{
-			const res = await fetch(url)
+			const audioCtx = new AudioContext()
+			const arrayBuffer = await api.tts.speak({
+				text: getText(),
+				locale: getLang().locale
+			})
 
-			audioCtx.decodeAudioData(await res.arrayBuffer(), audio =>
+			audioCtx.decodeAudioData(arrayBuffer, audio =>
 			{
 				const audioBuf = audioCtx.createBufferSource()
 				audioBuf.buffer = audio

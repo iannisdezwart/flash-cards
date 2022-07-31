@@ -1,7 +1,7 @@
 import { Locale } from '../../util/langs'
 import { request } from '../../util/request'
 
-interface ResponseModel
+export interface ResponseModel
 {
 	name: string
 	user: string

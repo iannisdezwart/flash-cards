@@ -6,6 +6,7 @@ interface RequestOptions
 	query?: { [ param: string ]: string }
 	apiToken?: string
 	headers?: { [ headerName: string ]: string }
+	output?: 'json' | 'arraybuffer'
 }
 
 const API_URL = 'http://localhost:3000'
@@ -39,16 +40,27 @@ export const request = async (options: RequestOptions) =>
 		headers
 	})
 
+	const output = options.output || 'json'
+
 	const read = async () =>
 	{
-		try
+		if (output == 'json')
 		{
-			return await res.json()
+			try
+			{
+				return await res.json()
+			}
+			catch
+			{
+				return {}
+			}
 		}
-		catch
+		else if (output == 'arraybuffer')
 		{
-			return {}
+			return await res.arrayBuffer()
 		}
+
+		return null
 	}
 
 	if (res.status >= 400)

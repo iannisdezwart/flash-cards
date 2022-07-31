@@ -9,6 +9,7 @@ import setsCardsUpdate from './sets/cards/update'
 import setsCardsReorder from './sets/cards/reorder'
 import authLogin from './auth/login'
 import authSignup from './auth/signup'
+import ttsSpeak from './tts/speak'
 
 export default {
 	sets: {
@@ -27,5 +28,8 @@ export default {
 	auth: {
 		login: authLogin,
 		signup: authSignup
+	},
+	tts: {
+		speak: ttsSpeak
 	}
 }
