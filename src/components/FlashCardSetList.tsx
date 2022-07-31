@@ -21,7 +21,7 @@ export default () =>
 	{
 		try
 		{
-			const sets = await api.sets.get()
+			const sets = await api.sets.getAll()
 
 			setSets(sets.map(set => ({
 				name: set.name,

@@ -13,7 +13,7 @@ interface ResponseModel
 	}[]
 }
 
-export default async (setName: string) =>
+export default async () =>
 {
 	const apiToken = localStorage.getItem('api-token')
 
@@ -25,9 +25,6 @@ export default async (setName: string) =>
 	return await request({
 		method: 'GET',
 		endpoint: '/sets',
-		headers: {
-			'X-Set-Name': setName
-		},
 		apiToken
-	}) as ResponseModel
+	}) as ResponseModel[]
 }

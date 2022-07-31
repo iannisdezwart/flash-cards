@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { navigate, PageProps } from 'gatsby'
 import Heading from '../components/Heading'
 import ActionListItem from '../components/ActionListItem'
@@ -11,35 +11,44 @@ import Padding from '../components/Padding'
 import ClickDetector from '../components/ClickDetector'
 import BackIcon from '../icons/back.svg'
 import SvgIcon from '../components/SvgIcon'
-import { FlashCardSetProps } from '../components/FlashCardSet'
+import { Lang } from '../util/langs'
 
 export default (props: PageProps) =>
 {
-	const set = props.location.state as FlashCardSetProps
+	const setName = new URLSearchParams(props.location.search).get('name')
+
+	if (setName == null)
+	{
+		navigate('/sets')
+		return null
+	}
+
+	const [ langFront, setlangFront ] = useState<Lang>(Lang.unknown)
+	const [ langBack, setlangBack ] = useState<Lang>(Lang.unknown)
 
 	const navigateToFlashcards = () =>
 	{
-		navigate('/flashcards', {
-			state: set
-		})
+		navigate(`/flashcards?set=${ setName }`)
 	}
 
 	const navigateToLearn = () =>
 	{
-		navigate('/learn', {
-			state: set
-		})
+		navigate(`/learn?set=${ setName }`)
 	}
 
 	const navigateToTest = () =>
 	{
-		navigate('/test', {
-			state: set
-		})
+		navigate(`/test?set=${ setName }`)
+	}
+
+	const onWordListLoad = (setProps: { langFront: Lang, langBack: Lang }) =>
+	{
+		setlangFront(setProps.langFront)
+		setlangBack(setProps.langBack)
 	}
 
 	return (<>
-		<Heading text={ set.name } leadingIcon={
+		<Heading text={ setName } leadingIcon={
 			<ClickDetector onClick={ () => navigate(-1) }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
@@ -53,10 +62,12 @@ export default (props: PageProps) =>
 
 		<Padding vertical={ 32 }/>
 
-		<WordList langFront={ set.langFront } langBack={ set.langBack } words={ set.cards.map(card => ({
-			front: card.front,
-			back: card.back,
-			new: false
-		})) } />
+		<WordList synchroniseWithServer={ true }
+			setName={ setName }
+			langFront={ langFront }
+			langBack={ langBack }
+			words={ [] }
+			onLoad={ onWordListLoad }
+		/>
 	</>)
 }

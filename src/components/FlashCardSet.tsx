@@ -46,9 +46,7 @@ export default (props: FlashCardSetProps) =>
 
 	const openSet = () =>
 	{
-		navigate(`/set`, {
-			state: props
-		})
+		navigate(`/set?name=${ props.name }`)
 	}
 
 	if (isDeleted)

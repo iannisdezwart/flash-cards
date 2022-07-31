@@ -20,6 +20,7 @@ interface WordListItemProps
 	back: Card
 	new: boolean
 	onChange: (newFront: string, newBack: string, type: 'new-word' | 'update-word') => void
+	onDelete: () => void
 }
 
 export default (props: WordListItemProps) =>
@@ -70,8 +71,7 @@ export default (props: WordListItemProps) =>
 	{
 		setDeleteClicked(false)
 		ref.current?.remove()
-
-		// TODO: Delete word through API.
+		props.onDelete()
 	}
 
 	const generateInnerInNormalMode = () =>

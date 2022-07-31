@@ -83,11 +83,17 @@ export default () =>
 
 		<Padding vertical={ 32 }/>
 
-		<WordList langFront={ langFront } langBack={ langBack } onChange={ wordsChanged } words={ [{
-			front: '',
-			back: '',
-			new: true
-		}] } />
+		<WordList synchroniseWithServer={ false }
+			setName=''
+			langFront={ langFront }
+			langBack={ langBack }
+			onChange={ wordsChanged }
+			words={ [{
+				front: '',
+				back: '',
+				new: true
+			}] }
+		/>
 
 		<Popup visible={ backClicked } title='Are you sure?'>
 			<Heading text='If you go back, the new set will not be saved.' size={ 1 } colour='#CBD1DC' />

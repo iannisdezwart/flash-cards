@@ -5,6 +5,7 @@ interface RequestOptions
 	body?: any
 	query?: { [ param: string ]: string }
 	apiToken?: string
+	headers?: { [ headerName: string ]: string }
 }
 
 const API_URL = 'http://localhost:3000'
@@ -25,7 +26,7 @@ export const request = async (options: RequestOptions) =>
 		queryParams = `?${ queryParamParts.join('&') }`
 	}
 
-	const headers: { [ key: string ]: string } = {}
+	const headers: { [ key: string ]: string } = options.headers || {}
 
 	if (options.apiToken)
 	{

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import WordListItem from './WordListItem'
 import Heading from './Heading'
 import ClickDetector from './ClickDetector'
@@ -7,6 +7,8 @@ import PlusIcon from '../icons/plus.svg'
 import { useState } from 'react'
 import { reorder } from '../util/reorder'
 import { Lang } from '../util/langs'
+import api from '../api'
+import Popup from './Popup'
 
 interface Word
 {
@@ -20,12 +22,41 @@ export interface WordListProps
 	words: Word[]
 	langFront: Lang
 	langBack: Lang
+	setName: string
+	synchroniseWithServer: boolean
 	onChange?: (words: { front: string, back: string }[]) => void
+	onLoad?: (setProps: { langFront: Lang, langBack: Lang }) => void
 }
 
 export default (props: WordListProps) =>
 {
 	const [ words, _setWords ] = useState(props.words)
+	const [ loadSetError, setLoadSetError ] = useState<string>()
+
+	const loadSet = async () =>
+	{
+		try
+		{
+			const set = await api.sets.get(props.setName)
+
+			setWords(set.cards.map(card => ({
+				front: card.front,
+				back: card.back,
+				new: false
+			})))
+
+			props.onLoad?.({
+				langFront: Lang.fromLocale(set.localeFront)!,
+				langBack: Lang.fromLocale(set.localeBack)!
+			})
+		}
+		catch (err)
+		{
+			setLoadSetError(err as string)
+		}
+	}
+
+	useEffect(() => { props.synchroniseWithServer && loadSet() }, [])
 
 	const setWords = (words: Word[]) =>
 	{
@@ -55,22 +86,65 @@ export default (props: WordListProps) =>
 
 		setWords(newWords)
 
+		if (!props.synchroniseWithServer)
+		{
+			return
+		}
+
 		switch (type)
 		{
-		case 'new-word':
-			// TODO: Add word through API.
-			break
-		case 'update-word':
-			// TODO: Update word through API.
-			break
+			case 'new-word':
+				api.sets.cards.add({
+					setName: props.setName,
+					card: {
+						front: newWords[index].front,
+						back: newWords[index].back
+					}
+				})
+				break
+
+			case 'update-word':
+				api.sets.cards.update({
+					setName: props.setName,
+					cardIndex: index,
+					card: {
+						front: newWords[index].front,
+						back: newWords[index].back
+					}
+				})
+				break
 		}
+	}
+
+	const deleteWord = (index: number) =>
+	{
+		if (!props.synchroniseWithServer)
+		{
+			return
+		}
+
+		api.sets.cards.delete({
+			setName: props.setName,
+			cardIndex: index
+		})
 	}
 
 	const reorderWords = (oldIndex: number, newIndex: number) =>
 	{
 		setWords(reorder(words, oldIndex, newIndex))
 
-		// TODO: Reorder words through API.
+		if (!props.synchroniseWithServer)
+		{
+			return
+		}
+
+		console.log('reordering on server')
+
+		api.sets.cards.reorder({
+			setName: props.setName,
+			oldCardIndex: oldIndex,
+			newCardIndex: newIndex,
+		})
 	}
 
 	return ( <>
@@ -88,8 +162,13 @@ export default (props: WordListProps) =>
 					new={ word.new }
 					key={ i }
 					onChange={ (newFront, newBack, type) => updateWord(i, newFront, newBack, type) }
+					onDelete={ () => deleteWord(i) }
 				/>
 			)) }
 		</DraggableList>
+
+		<Popup visible={ loadSetError != null } title='Error loading set'>
+			<Heading size={ 1 } colour='#CBD1DC' text={ loadSetError! } />
+		</Popup>
 	</> )
 }
