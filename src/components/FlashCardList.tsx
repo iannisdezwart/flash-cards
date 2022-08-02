@@ -37,12 +37,36 @@ export default (props: FlashCardListProps) => {
 
 	useEffect(() => { loadSet() }, [])
 
+	const toggleStar = (cardIndex: number) =>
+	{
+		if (set == null)
+		{
+			return
+		}
+
+		const newSet = { ...set }
+		newSet.cards[cardIndex].starred = !newSet.cards[cardIndex].starred
+		setSet(newSet)
+
+		api.sets.cards.update({
+			setName: props.setName,
+			cardIndex,
+			card: {
+				front: set.cards[cardIndex].front,
+				back: set.cards[cardIndex].back,
+				starred: newSet.cards[cardIndex].starred
+			}
+		})
+	}
+
 	return ( <>
 		<div className={ styles.flashCardList }>
 			{ set != null && set.cards.map((card, i) => (
 				<FlashCard
 					front={{ lang: set.langFront, text: card.front }}
 					back={{ lang: set.langBack, text: card.back }}
+					starred={ card.starred }
+					onToggleStar={ () => toggleStar(i) }
 					key={ i } />
 			)) }
 		</div>

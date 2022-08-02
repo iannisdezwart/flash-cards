@@ -49,7 +49,7 @@ export default (props: PageProps) =>
 
 	return ( <>
 		<Heading text={ setName } leadingIcon={
-			<ClickDetector onClick={ () => navigate(-1) }>
+			<ClickDetector onClick={ () => navigate('/sets') }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} />

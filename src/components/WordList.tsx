@@ -15,6 +15,7 @@ interface Word
 	front: string
 	back: string
 	new: boolean
+	starred: boolean
 }
 
 export interface WordListProps
@@ -42,7 +43,8 @@ export default (props: WordListProps) =>
 			setWords(set.cards.map(card => ({
 				front: card.front,
 				back: card.back,
-				new: false
+				new: false,
+				starred: card.starred
 			})))
 
 			props.onLoad?.({
@@ -71,17 +73,19 @@ export default (props: WordListProps) =>
 			{
 				front: '',
 				back: '',
-				new: true
+				new: true,
+				starred: false
 			}
 		])
 	}
 
-	const updateWord = (index: number, newFront: string, newBack: string, type: 'new-word' | 'update-word') =>
+	const updateWord = (index: number, newFront: string, newBack: string, starred: boolean, type: 'new-word' | 'update-word') =>
 	{
 		const newWords = words.slice()
 
 		newWords[index].front = newFront
 		newWords[index].back = newBack
+		newWords[index].starred = starred
 		newWords[index].new = false
 
 		setWords(newWords)
@@ -109,7 +113,8 @@ export default (props: WordListProps) =>
 					cardIndex: index,
 					card: {
 						front: newWords[index].front,
-						back: newWords[index].back
+						back: newWords[index].back,
+						starred: newWords[index].starred
 					}
 				})
 				break
@@ -160,8 +165,9 @@ export default (props: WordListProps) =>
 					front={{ text: word.front, lang: props.langFront }}
 					back={{ text: word.back, lang: props.langBack }}
 					new={ word.new }
+					starred={ word.starred }
 					key={ i }
-					onChange={ (newFront, newBack, type) => updateWord(i, newFront, newBack, type) }
+					onChange={ (newFront, newBack, starred, type) => updateWord(i, newFront, newBack, starred, type) }
 					onDelete={ () => deleteWord(i) }
 				/>
 			)) }

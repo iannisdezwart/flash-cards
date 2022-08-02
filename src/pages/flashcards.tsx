@@ -18,7 +18,7 @@ export default (props: PageProps) =>
 
 	return (<>
 		<Heading text='Flashcards' leadingIcon={
-			<ClickDetector onClick={ () => navigate(-1) }>
+			<ClickDetector onClick={ () => navigate(`/set?name=${ setName }`) }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} />

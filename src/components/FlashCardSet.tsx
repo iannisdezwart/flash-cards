@@ -13,6 +13,7 @@ interface Card
 {
 	back: string
 	front: string
+	starred: boolean
 }
 
 export interface FlashCardSetProps

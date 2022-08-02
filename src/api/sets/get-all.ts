@@ -10,6 +10,7 @@ interface ResponseModel
 	cards: {
 		front: string
 		back: string
+		starred: boolean
 	}[]
 }
 

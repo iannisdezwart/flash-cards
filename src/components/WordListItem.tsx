@@ -3,10 +3,15 @@ import SideSwipable, { SideSwipableOnClickAction } from './SideSwipable'
 import EditIcon from '../icons/edit.svg'
 import DeleteIcon from '../icons/delete.svg'
 import CheckIcon from '../icons/check.svg'
+import StarIcon from '../icons/star.svg'
+import ActiveStarIcon from '../icons/star-active.svg'
 import * as styles from './WordListItem.module.sass'
 import Popup from './Popup'
 import Button from './Button'
 import { Lang } from '../util/langs'
+import SvgIcon from './SvgIcon'
+import { classNames } from '../util/class-names'
+import ClickDetector from './ClickDetector'
 
 interface Card
 {
@@ -19,7 +24,8 @@ interface WordListItemProps
 	front: Card
 	back: Card
 	new: boolean
-	onChange: (newFront: string, newBack: string, type: 'new-word' | 'update-word') => void
+	starred: boolean
+	onChange: (newFront: string, newBack: string, starred: boolean, type: 'new-word' | 'update-word') => void
 	onDelete: () => void
 }
 
@@ -47,14 +53,19 @@ export default (props: WordListItemProps) =>
 
 		if (props.new)
 		{
-			props.onChange(frontInput, backInput, 'new-word')
+			props.onChange(frontInput, backInput, false, 'new-word')
 			return
 		}
 
 		if (props.front.text != frontInput || props.back.text != backInput)
 		{
-			props.onChange(frontInput, backInput, 'update-word')
+			props.onChange(frontInput, backInput, props.starred, 'update-word')
 		}
+	}
+
+	const starWord = () =>
+	{
+		props.onChange(props.front.text, props.back.text, !props.starred, 'update-word')
 	}
 
 	const deleteWord = () =>
@@ -108,7 +119,7 @@ export default (props: WordListItemProps) =>
 		return generateInnerInNormalMode()
 	}
 
-	return (
+	return ( <>
 		<div className={ styles.wordListItem } ref={ ref }>
 			<SideSwipable
 				leftIcon={{
@@ -132,12 +143,19 @@ export default (props: WordListItemProps) =>
 					{ generateInner() }
 				</div>
 			</SideSwipable>
-			{
-				<Popup visible={ deleteClicked } title='Are you sure?'>
-					<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteWordCancel }></Button>
-					<Button bgColour='#EC7272' fgColour='#fff' text='Delete word' onClick={ deleteWordConfirm }></Button>
-				</Popup>
-			}
+
+			<ClickDetector onClick={ starWord }>
+				<div className={ classNames({
+					[styles.active]: props.starred,
+					[styles.star]: true
+				}) }>
+					<SvgIcon Icon={ props.starred ? ActiveStarIcon : StarIcon } width={ 28 } height={ 28 } />
+				</div>
+			</ClickDetector>
 		</div>
-	)
+		<Popup visible={ deleteClicked } title='Are you sure?'>
+			<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteWordCancel }></Button>
+			<Button bgColour='#EC7272' fgColour='#fff' text='Delete word' onClick={ deleteWordConfirm }></Button>
+		</Popup>
+	</> )
 }

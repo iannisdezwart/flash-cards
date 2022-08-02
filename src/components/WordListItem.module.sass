@@ -1,4 +1,5 @@
 .word-list-item
+	position: relative
 	margin: .75rem
 
 	.inner
@@ -39,3 +40,20 @@
 			height: 100%
 
 			background-color: #232328
+
+	.star
+		position: absolute
+		left: -44px
+		padding: 8px
+		top: 50%
+		transform: translateY(-50%)
+
+		opacity: 0
+		transition: opacity 150ms ease-in-out
+
+		&.active
+			opacity: 1
+
+	&:hover
+		.star
+			opacity: 1

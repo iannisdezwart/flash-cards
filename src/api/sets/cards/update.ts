@@ -7,6 +7,7 @@ interface RequestModel
 	card: {
 		front: string
 		back: string
+		starred: boolean
 	}
 }
 

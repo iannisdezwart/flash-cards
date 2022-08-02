@@ -91,7 +91,8 @@ export default () =>
 			words={ [{
 				front: '',
 				back: '',
-				new: true
+				new: true,
+				starred: false
 			}] }
 		/>
 
@@ -99,7 +100,7 @@ export default () =>
 			<Heading text='If you go back, the new set will not be saved.' size={ 1 } colour='#CBD1DC' />
 			<HorizontalFlexbox>
 				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ () => setBackClicked(false) }></Button>
-				<Button bgColour='#EC7272' fgColour='#fff' text='Discard set' onClick={ () => navigate(-1) }></Button>
+				<Button bgColour='#EC7272' fgColour='#fff' text='Discard set' onClick={ () => navigate('/sets') }></Button>
 			</HorizontalFlexbox>
 		</Popup>
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import api from '../api'
-import Speaker from '../icons/speaker.svg'
-import Star from '../icons/star.svg'
+import SpeakerIcon from '../icons/speaker.svg'
+import StarIcon from '../icons/star.svg'
+import ActiveStarIcon from '../icons/star-active.svg'
 import { Lang } from '../util/langs'
 import * as styles from './FlashCard.module.sass'
 
@@ -15,6 +16,8 @@ export interface FlashCardProps
 {
 	front: FlashCardContent
 	back: FlashCardContent
+	starred: boolean
+	onToggleStar: () => void
 }
 
 interface FlashCardState
@@ -82,23 +85,26 @@ export default (props: FlashCardProps) =>
 	const star = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
 	{
 		e.stopPropagation()
-
-		// TODO: Implement.
+		props.onToggleStar()
 	}
 
 	return (
 		<div className={ `${ styles.flashCard } ${ state.isFlipped ? styles.flipped : '' }` } onClick={ flipCard }>
 			<div className={ styles.content }>
 				<div className={ styles.front }>
-					<Star className={ styles.button } width='24' height='24' onClick={ star } />
+					{ props.starred
+						? <ActiveStarIcon className={ styles.button } width='24' height='24' onClick={ star } />
+						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
 					<p>{ props.front.text }</p>
-					<Speaker className={ styles.button } width='24' height='24' onClick={ speak } />
+					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ speak } />
 				</div>
 
 				<div className={ styles.back }>
-					<Star className={ styles.button } width='24' height='24' onClick={ star } />
+					{ props.starred
+						? <ActiveStarIcon className={ styles.button } width='24' height='24' onClick={ star } />
+						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
 					<p>{ props.back.text }</p>
-					<Speaker className={ styles.button } width='24' height='24' onClick={ speak } />
+					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ speak } />
 				</div>
 			</div>
 		</div>
