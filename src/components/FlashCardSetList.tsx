@@ -17,6 +17,11 @@ export default () =>
 	const [ sets, setSets ] = useState<FlashCardSetProps[]>([])
 	const [ loadSetsError, setLoadSetsError ] = useState<string>()
 
+	const deleteSet = (setName: string) =>
+	{
+		setSets(sets.filter(s => s.name != setName))
+	}
+
 	const loadSets = async () =>
 	{
 		try
@@ -26,8 +31,7 @@ export default () =>
 			setSets(allSets.map(set => ({
 				name: set.name,
 				langFront: Lang.fromLocale(set.localeFront)!,
-				langBack: Lang.fromLocale(set.localeBack)!,
-				onDelete: () => setSets(sets.filter(s => s.name != set.name))
+				langBack: Lang.fromLocale(set.localeBack)!
 			})))
 		}
 		catch (err)
@@ -66,7 +70,7 @@ export default () =>
 					name={ set.name }
 					langFront={ set.langFront }
 					langBack={ set.langBack }
-					onDelete={ set.onDelete }
+					onDelete={ () => deleteSet(set.name) }
 					key={ i } />
 			)) }
 		</DraggableList>
