@@ -14,6 +14,7 @@ import HorizontalFlexbox from '../components/HorizontalFlexbox'
 import { Lang } from '../util/langs'
 import FloatingButton from '../components/FloatingButton'
 import api from '../api'
+import { Helmet } from 'react-helmet'
 
 export default () =>
 {
@@ -69,6 +70,10 @@ export default () =>
 	}
 
 	return (<>
+		<Helmet>
+			<title>New Set | Flashcards</title>
+		</Helmet>
+
 		<Heading text='New set' leadingIcon={
 			<ClickDetector onClick={ back }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />

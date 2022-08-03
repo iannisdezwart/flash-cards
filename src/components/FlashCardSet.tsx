@@ -8,6 +8,7 @@ import { Lang } from '../util/langs'
 import api from '../api'
 import Popup from './Popup'
 import Heading from './Heading'
+import Button from './Button'
 
 interface Card
 {
@@ -28,8 +29,20 @@ export interface FlashCardSetProps
 export default (props: FlashCardSetProps) =>
 {
 	const [ deleteSetErr, setDeleteSetErr ] = useState<string>()
+	const [ deleteClicked, setDeleteClicked ] = useState(false)
 
-	const deleteSet = async () =>
+	const deleteSet = (e: React.MouseEvent) =>
+	{
+		e.preventDefault()
+		setDeleteClicked(true)
+	}
+
+	const deleteSetCancel = () =>
+	{
+		setDeleteClicked(false)
+	}
+
+	const deleteSetConfirm = async () =>
 	{
 		try
 		{
@@ -70,6 +83,11 @@ export default (props: FlashCardSetProps) =>
 
 			<Popup visible={ deleteSetErr != null } title='Error deleting set'>
 				<Heading size={ 1 } colour='#CBD1DC' text={ deleteSetErr! } />
+			</Popup>
+
+			<Popup visible={ deleteClicked } title='Are you sure?'>
+				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteSetCancel }></Button>
+				<Button bgColour='#EC7272' fgColour='#fff' text='Delete set' onClick={ deleteSetConfirm }></Button>
 			</Popup>
 		</div>
 	)

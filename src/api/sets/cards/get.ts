@@ -1,12 +1,10 @@
-import { Locale } from '../../util/langs'
-import { request } from '../../util/request'
+import { request } from '../../../util/request'
 
 export interface ResponseModel
 {
-	name: string
-	user: string
-	localeFront: Locale
-	localeBack: Locale
+	front: string
+	back: string
+	starred: boolean
 }
 
 export default async (setName: string) =>
@@ -20,10 +18,10 @@ export default async (setName: string) =>
 
 	return await request({
 		method: 'GET',
-		endpoint: '/sets',
+		endpoint: '/sets/cards',
 		headers: {
 			'X-Set-Name': setName
 		},
 		apiToken
-	}) as ResponseModel
+	}) as ResponseModel[]
 }

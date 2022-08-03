@@ -38,9 +38,12 @@ export default (props: WordListProps) =>
 	{
 		try
 		{
-			const set = await api.sets.get(props.setName)
+			const [ set, cards ] = await Promise.all([
+				await api.sets.get(props.setName),
+				await api.sets.cards.get(props.setName)
+			])
 
-			setWords(set.cards.map(card => ({
+			setWords(cards.map(card => ({
 				front: card.front,
 				back: card.back,
 				new: false,
@@ -142,8 +145,6 @@ export default (props: WordListProps) =>
 		{
 			return
 		}
-
-		console.log('reordering on server')
 
 		api.sets.cards.reorder({
 			setName: props.setName,

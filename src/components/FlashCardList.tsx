@@ -20,10 +20,13 @@ export default (props: FlashCardListProps) => {
 	{
 		try
 		{
-			const set = await api.sets.get(props.setName)
+			const [ set, cards ] = await Promise.all([
+				await api.sets.get(props.setName),
+				await api.sets.cards.get(props.setName)
+			])
 
 			setSet({
-				cards: set.cards,
+				cards: cards,
 				name: set.name,
 				langFront: Lang.fromLocale(set.localeFront)!,
 				langBack: Lang.fromLocale(set.localeBack)!

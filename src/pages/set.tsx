@@ -12,6 +12,7 @@ import ClickDetector from '../components/ClickDetector'
 import BackIcon from '../icons/back.svg'
 import SvgIcon from '../components/SvgIcon'
 import { Lang } from '../util/langs'
+import { Helmet } from 'react-helmet'
 
 export default (props: PageProps) =>
 {
@@ -48,6 +49,10 @@ export default (props: PageProps) =>
 	}
 
 	return ( <>
+		<Helmet>
+			<title>{ setName } | Flashcards</title>
+		</Helmet>
+
 		<Heading text={ setName } leadingIcon={
 			<ClickDetector onClick={ () => navigate('/sets') }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />

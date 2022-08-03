@@ -3,6 +3,7 @@ import setsGet from './sets/get'
 import setsGetAll from './sets/get-all'
 import setsDelete from './sets/delete'
 import setsReorder from './sets/reorder'
+import setsCardsGet from './sets/cards/get'
 import setsCardsAdd from './sets/cards/add'
 import setsCardsDelete from './sets/cards/delete'
 import setsCardsUpdate from './sets/cards/update'
@@ -19,6 +20,7 @@ export default {
 		delete: setsDelete,
 		reorder: setsReorder,
 		cards: {
+			get: setsCardsGet,
 			add: setsCardsAdd,
 			delete: setsCardsDelete,
 			update: setsCardsUpdate,

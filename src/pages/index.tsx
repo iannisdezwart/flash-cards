@@ -1,5 +1,6 @@
 import { navigate } from 'gatsby'
 import React, { createRef, useEffect, useState } from 'react'
+import Helmet from 'react-helmet'
 import api from '../api'
 import validateToken from '../api/auth/validate-token'
 import Button from '../components/Button'
@@ -68,9 +69,13 @@ export default () =>
 		}
 	}
 
-	return (
+	return ( <>
+		<Helmet>
+			<title>Log In | Flashcards</title>
+		</Helmet>
+
 		<VerticalFlexbox>
-			<Heading text='Flash cards' />
+			<Heading text='Flashcards' />
 			<Padding vertical={ 16 } />
 			<Heading text='Log in' size={ 2.5 } colour='#CBD1DC' />
 
@@ -83,5 +88,5 @@ export default () =>
 				<Button text='Sign up' fgColour='#fff' bgColour='#3C8DEC' onClick={ signUp } size={ 1.25 } />
 			</div>
 		</VerticalFlexbox>
-	)
+	</> )
 }

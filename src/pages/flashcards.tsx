@@ -5,6 +5,7 @@ import FlashCardList from '../components/FlashCardList'
 import ClickDetector from '../components/ClickDetector'
 import BackIcon from '../icons/back.svg'
 import SvgIcon from '../components/SvgIcon'
+import { Helmet } from 'react-helmet'
 
 export default (props: PageProps) =>
 {
@@ -17,6 +18,10 @@ export default (props: PageProps) =>
 	}
 
 	return (<>
+		<Helmet>
+			<title>Flashcards | { setName } | Flashcards</title>
+		</Helmet>
+
 		<Heading text='Flashcards' leadingIcon={
 			<ClickDetector onClick={ () => navigate(`/set?name=${ setName }`) }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
