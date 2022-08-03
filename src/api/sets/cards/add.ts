@@ -9,6 +9,11 @@ interface RequestModel
 	}
 }
 
+interface ResponseModel
+{
+	cardId: number
+}
+
 export default async (req: RequestModel) =>
 {
 	const apiToken = localStorage.getItem('api-token')
@@ -18,10 +23,10 @@ export default async (req: RequestModel) =>
 		throw 'Not authenticated. Please log in again.'
 	}
 
-	await request({
+	return await request({
 		method: 'POST',
 		endpoint: '/sets/cards',
 		apiToken,
 		body: req
-	})
+	}) as ResponseModel
 }

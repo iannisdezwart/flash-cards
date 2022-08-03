@@ -3,6 +3,7 @@ import { request } from '../../util/request'
 
 export interface ResponseModel
 {
+	id: number
 	name: string
 	user: string
 	localeFront: Locale

@@ -25,7 +25,6 @@ export default () =>
 
 			setSets(allSets.map(set => ({
 				name: set.name,
-				cards: set.cards,
 				langFront: Lang.fromLocale(set.localeFront)!,
 				langBack: Lang.fromLocale(set.localeBack)!,
 				onDelete: () => setSets(sets.filter(s => s.name != set.name))
@@ -64,7 +63,6 @@ export default () =>
 		<DraggableList onReorder={ onReorder }>
 			{ sets.map((set, i) => (
 				<FlashCardSet
-					cards={ set.cards }
 					name={ set.name }
 					langFront={ set.langFront }
 					langBack={ set.langBack }

@@ -12,6 +12,7 @@ import Popup from './Popup'
 
 interface Word
 {
+	id?: number
 	front: string
 	back: string
 	new: boolean
@@ -44,6 +45,7 @@ export default (props: WordListProps) =>
 			])
 
 			setWords(cards.map(card => ({
+				id: card.id,
 				front: card.front,
 				back: card.back,
 				new: false,
@@ -82,7 +84,7 @@ export default (props: WordListProps) =>
 		])
 	}
 
-	const updateWord = (index: number, newFront: string, newBack: string, starred: boolean, type: 'new-word' | 'update-word') =>
+	const updateWord = async (index: number, newFront: string, newBack: string, starred: boolean, type: 'new-word' | 'update-word') =>
 	{
 		const newWords = words.slice()
 
@@ -90,8 +92,6 @@ export default (props: WordListProps) =>
 		newWords[index].back = newBack
 		newWords[index].starred = starred
 		newWords[index].new = false
-
-		setWords(newWords)
 
 		if (!props.synchroniseWithServer)
 		{
@@ -101,30 +101,33 @@ export default (props: WordListProps) =>
 		switch (type)
 		{
 			case 'new-word':
-				api.sets.cards.add({
+				const { cardId } = await api.sets.cards.add({
 					setName: props.setName,
 					card: {
 						front: newWords[index].front,
 						back: newWords[index].back
 					}
 				})
+				newWords[index].id = cardId
+				setWords(newWords)
 				break
 
 			case 'update-word':
 				api.sets.cards.update({
 					setName: props.setName,
-					cardIndex: index,
+					cardId: newWords[index].id!,
 					card: {
 						front: newWords[index].front,
 						back: newWords[index].back,
 						starred: newWords[index].starred
 					}
 				})
+				setWords(newWords)
 				break
 		}
 	}
 
-	const deleteWord = (index: number) =>
+	const deleteWord = (cardId: number) =>
 	{
 		if (!props.synchroniseWithServer)
 		{
@@ -133,7 +136,7 @@ export default (props: WordListProps) =>
 
 		api.sets.cards.delete({
 			setName: props.setName,
-			cardIndex: index
+			cardId
 		})
 	}
 
@@ -148,8 +151,8 @@ export default (props: WordListProps) =>
 
 		api.sets.cards.reorder({
 			setName: props.setName,
-			oldCardIndex: oldIndex,
-			newCardIndex: newIndex,
+			cardId: words[oldIndex].id!,
+			insertAtId: words[newIndex].id!
 		})
 	}
 
@@ -169,7 +172,7 @@ export default (props: WordListProps) =>
 					starred={ word.starred }
 					key={ i }
 					onChange={ (newFront, newBack, starred, type) => updateWord(i, newFront, newBack, starred, type) }
-					onDelete={ () => deleteWord(i) }
+					onDelete={ () => deleteWord(word.id!) }
 				/>
 			)) }
 		</DraggableList>

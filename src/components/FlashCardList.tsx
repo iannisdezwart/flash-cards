@@ -3,7 +3,6 @@ import api from '../api'
 import { Lang } from '../util/langs'
 import FlashCard from './FlashCard'
 import * as styles from './FlashCardList.module.sass'
-import { FlashCardSetProps } from './FlashCardSet'
 import Heading from './Heading'
 import Popup from './Popup'
 
@@ -12,8 +11,18 @@ interface FlashCardListProps
 	setName: string
 }
 
+interface Word
+{
+	id: number
+	front: string
+	back: string
+	starred: boolean
+}
+
 export default (props: FlashCardListProps) => {
-	const [ set, setSet ] = useState<FlashCardSetProps>()
+	const [ cards, setCards ] = useState<Word[]>([])
+	const [ langFront, setLangFront ] = useState(Lang.unknown)
+	const [ langBack, setLangBack ] = useState(Lang.unknown)
 	const [ loadSetError, setLoadSetError ] = useState<string>()
 
 	const loadSet = async () =>
@@ -25,12 +34,9 @@ export default (props: FlashCardListProps) => {
 				await api.sets.cards.get(props.setName)
 			])
 
-			setSet({
-				cards: cards,
-				name: set.name,
-				langFront: Lang.fromLocale(set.localeFront)!,
-				langBack: Lang.fromLocale(set.localeBack)!
-			})
+			setLangFront(Lang.fromLocale(set.localeFront) || Lang.unknown)
+			setLangBack(Lang.fromLocale(set.localeBack) || Lang.unknown)
+			setCards(cards)
 		}
 		catch (err)
 		{
@@ -42,32 +48,32 @@ export default (props: FlashCardListProps) => {
 
 	const toggleStar = (cardIndex: number) =>
 	{
-		if (set == null)
+		if (cards == null)
 		{
 			return
 		}
 
-		const newSet = { ...set }
-		newSet.cards[cardIndex].starred = !newSet.cards[cardIndex].starred
-		setSet(newSet)
+		const newCards = cards.slice()
+		newCards[cardIndex].starred = !newCards[cardIndex].starred
+		setCards(newCards)
 
 		api.sets.cards.update({
 			setName: props.setName,
-			cardIndex,
+			cardId: newCards[cardIndex].id,
 			card: {
-				front: set.cards[cardIndex].front,
-				back: set.cards[cardIndex].back,
-				starred: newSet.cards[cardIndex].starred
+				front: newCards[cardIndex].front,
+				back: newCards[cardIndex].back,
+				starred: newCards[cardIndex].starred
 			}
 		})
 	}
 
 	return ( <>
 		<div className={ styles.flashCardList }>
-			{ set != null && set.cards.map((card, i) => (
+			{ cards != null && cards.map((card, i) => (
 				<FlashCard
-					front={{ lang: set.langFront, text: card.front }}
-					back={{ lang: set.langBack, text: card.back }}
+					front={{ lang: langFront, text: card.front }}
+					back={{ lang: langBack, text: card.back }}
 					starred={ card.starred }
 					onToggleStar={ () => toggleStar(i) }
 					key={ i } />

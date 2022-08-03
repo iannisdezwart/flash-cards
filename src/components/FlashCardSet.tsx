@@ -10,16 +10,8 @@ import Popup from './Popup'
 import Heading from './Heading'
 import Button from './Button'
 
-interface Card
-{
-	back: string
-	front: string
-	starred: boolean
-}
-
 export interface FlashCardSetProps
 {
-	cards: Card[]
 	name: string
 	langFront: Lang
 	langBack: Lang

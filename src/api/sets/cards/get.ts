@@ -2,6 +2,7 @@ import { request } from '../../../util/request'
 
 export interface ResponseModel
 {
+	id: number
 	front: string
 	back: string
 	starred: boolean

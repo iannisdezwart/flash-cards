@@ -3,15 +3,11 @@ import { request } from '../../util/request'
 
 interface ResponseModel
 {
+	id: number
 	name: string
 	user: string
 	localeFront: Locale
 	localeBack: Locale
-	cards: {
-		front: string
-		back: string
-		starred: boolean
-	}[]
 }
 
 export default async () =>

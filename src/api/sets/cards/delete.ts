@@ -3,7 +3,7 @@ import { request } from '../../../util/request'
 interface RequestModel
 {
 	setName: string
-	cardIndex: number
+	cardId: number
 }
 
 export default async (req: RequestModel) =>
