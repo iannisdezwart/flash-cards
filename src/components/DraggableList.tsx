@@ -88,7 +88,7 @@ export default (props: DraggableListProps) =>
 
 		if (dragRelativePosition != 0)
 		{
-			const newIndex = bound(draggingElementId + dragRelativePosition, 0, props.children.length)
+			const newIndex = bound(draggingElementId + dragRelativePosition, 0, props.children.length - 1)
 			props.onReorder(draggingElementId, newIndex)
 		}
 
