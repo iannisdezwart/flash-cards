@@ -170,6 +170,7 @@ export default (props: WordListProps) =>
 					back={{ text: word.back, lang: props.langBack }}
 					new={ word.new }
 					starred={ word.starred }
+					canBeStarred={ word.id != null }
 					key={ i }
 					onChange={ (newFront, newBack, starred, type) => updateWord(i, newFront, newBack, starred, type) }
 					onDelete={ () => deleteWord(word.id!) }

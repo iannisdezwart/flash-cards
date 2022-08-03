@@ -25,6 +25,7 @@ interface WordListItemProps
 	back: Card
 	new: boolean
 	starred: boolean
+	canBeStarred: boolean
 	onChange: (newFront: string, newBack: string, starred: boolean, type: 'new-word' | 'update-word') => void
 	onDelete: () => void
 }
@@ -144,14 +145,16 @@ export default (props: WordListItemProps) =>
 				</div>
 			</SideSwipable>
 
-			<ClickDetector onClick={ starWord }>
-				<div className={ classNames({
-					[styles.active]: props.starred,
-					[styles.star]: true
-				}) }>
-					<SvgIcon Icon={ props.starred ? ActiveStarIcon : StarIcon } width={ 28 } height={ 28 } />
-				</div>
-			</ClickDetector>
+			{ props.canBeStarred &&
+				<ClickDetector onClick={ starWord }>
+					<div className={ classNames({
+						[styles.active]: props.starred,
+						[styles.star]: true
+					}) }>
+						<SvgIcon Icon={ props.starred ? ActiveStarIcon : StarIcon } width={ 28 } height={ 28 } />
+					</div>
+				</ClickDetector>
+			}
 		</div>
 		<Popup visible={ deleteClicked } title='Are you sure?'>
 			<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteWordCancel }></Button>
