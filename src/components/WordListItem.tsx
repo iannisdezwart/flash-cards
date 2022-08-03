@@ -82,7 +82,6 @@ export default (props: WordListItemProps) =>
 	const deleteWordConfirm = () =>
 	{
 		setDeleteClicked(false)
-		ref.current?.remove()
 		props.onDelete()
 	}
 

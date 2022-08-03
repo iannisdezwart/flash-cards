@@ -9,6 +9,7 @@ import { reorder } from '../util/reorder'
 import { Lang } from '../util/langs'
 import api from '../api'
 import Popup from './Popup'
+import * as styles from './WordList.module.sass'
 
 interface Word
 {
@@ -138,6 +139,8 @@ export default (props: WordListProps) =>
 			setName: props.setName,
 			cardId
 		})
+
+		setWords(words.filter(word => word.id != cardId))
 	}
 
 	const reorderWords = (oldIndex: number, newIndex: number) =>
@@ -162,6 +165,10 @@ export default (props: WordListProps) =>
 				<PlusIcon />
 			</ClickDetector>
 		} />
+
+		{ words.length == 0 &&
+			<p className={ styles.noSets }>This set doesn't have any words. Tap the plus icon to add a word!</p>
+		}
 
 		<DraggableList onReorder={ reorderWords }>
 			{ words.map((word, i) => (
