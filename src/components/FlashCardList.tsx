@@ -4,6 +4,7 @@ import { Lang } from '../util/langs'
 import FlashCard from './FlashCard'
 import * as styles from './FlashCardList.module.sass'
 import Heading from './Heading'
+import Paragraph from './Paragraph'
 import Popup from './Popup'
 
 interface FlashCardListProps
@@ -57,14 +58,10 @@ export default (props: FlashCardListProps) => {
 		newCards[cardIndex].starred = !newCards[cardIndex].starred
 		setCards(newCards)
 
-		api.sets.cards.update({
+		api.sets.cards.setStarred({
 			setName: props.setName,
 			cardId: newCards[cardIndex].id,
-			card: {
-				front: newCards[cardIndex].front,
-				back: newCards[cardIndex].back,
-				starred: newCards[cardIndex].starred
-			}
+			starred: newCards[cardIndex].starred
 		})
 	}
 
@@ -81,7 +78,7 @@ export default (props: FlashCardListProps) => {
 		</div>
 
 		<Popup visible={ loadSetError != null } title='Error loading set'>
-			<Heading size={ 1 } colour='#CBD1DC' text={ loadSetError! } />
+			<Paragraph colour='#CBD1DC' align='center' text={ loadSetError! } />
 		</Popup>
 	</> )
 }

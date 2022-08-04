@@ -7,8 +7,8 @@ import SideSwipable from './SideSwipable'
 import { Lang } from '../util/langs'
 import api from '../api'
 import Popup from './Popup'
-import Heading from './Heading'
 import Button from './Button'
+import Paragraph from './Paragraph'
 
 export interface FlashCardSetProps
 {
@@ -74,7 +74,7 @@ export default (props: FlashCardSetProps) =>
 			</SideSwipable>
 
 			<Popup visible={ deleteSetErr != null } title='Error deleting set'>
-				<Heading size={ 1 } colour='#CBD1DC' text={ deleteSetErr! } />
+				<Paragraph colour='#CBD1DC' align='center' text={ deleteSetErr! } />
 			</Popup>
 
 			<Popup visible={ deleteClicked } title='Are you sure?'>

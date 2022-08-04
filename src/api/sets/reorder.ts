@@ -12,7 +12,9 @@ export default async (oldIndex: number, newIndex: number) =>
 	return await request({
 		method: 'PATCH',
 		endpoint: '/sets',
-		apiToken,
+		headers: {
+			'Authorization': apiToken
+		},
 		body: {
 			action: 'reorder',
 			oldIndex,

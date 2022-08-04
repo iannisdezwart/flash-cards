@@ -9,6 +9,7 @@ import Padding from './Padding'
 import { Lang } from '../util/langs'
 import ScrollableList from './ScrollableList'
 import Heading from './Heading'
+import Paragraph from './Paragraph'
 
 interface LangPickerProps
 {
@@ -88,7 +89,7 @@ export default (props: LangPickerProps) =>
 										<Padding horizontal={ 16 } />
 									</HorizontalFlexbox>
 								</div>
-								<Heading text={ lang.fullName } size={ 1 } colour='#CBD1DC' align='start' />
+								<Paragraph colour='#CBD1DC' text={ lang.fullName } />
 							</ClickDetector>
 						</HorizontalFlexbox>
 					)) }

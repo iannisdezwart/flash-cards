@@ -4,6 +4,7 @@ interface RequestModel
 {
 	setName: string
 	cardId: number
+	starred: boolean
 }
 
 export default async (req: RequestModel) =>
@@ -16,11 +17,14 @@ export default async (req: RequestModel) =>
 	}
 
 	await request({
-		method: 'DELETE',
+		method: 'PATCH',
 		endpoint: '/sets/cards',
 		headers: {
 			'Authorization': apiToken
 		},
-		body: req
+		body: {
+			action: 'set-starred',
+			...req
+		}
 	})
 }

@@ -14,11 +14,11 @@ interface FloatingButtonProps
 export default (props: FloatingButtonProps) =>
 {
 	return createPortal(
-		<div className={ styles.floatingButton } style={{ backgroundColor: props.colour }}>
-			<ClickDetector onClick={ props.onClick }>
-				<SvgIcon Icon={ props.Icon } width={ 40 } height={ 40 } />
-			</ClickDetector>
-		</div>,
+		<ClickDetector onClick={ props.onClick }>
+			<div className={ styles.floatingButton } style={{ backgroundColor: props.colour }}>
+					<SvgIcon Icon={ props.Icon } width={ 40 } height={ 40 } />
+			</div>
+		</ClickDetector>,
 		document.body
 	)
 }

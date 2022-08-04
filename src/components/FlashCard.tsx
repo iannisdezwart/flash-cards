@@ -5,6 +5,7 @@ import StarIcon from '../icons/star.svg'
 import ActiveStarIcon from '../icons/star-active.svg'
 import { Lang } from '../util/langs'
 import * as styles from './FlashCard.module.sass'
+import { speak } from '../util/speak'
 
 interface FlashCardContent
 {
@@ -20,25 +21,18 @@ export interface FlashCardProps
 	onToggleStar: () => void
 }
 
-interface FlashCardState
-{
-	isFlipped: boolean
-}
-
 export default (props: FlashCardProps) =>
 {
-	const [ state, setState ] = useState<FlashCardState>({
-		isFlipped: false
-	})
+	const [ isFlipped, setFlipped ] = useState(false)
 
 	const flipCard = () =>
 	{
-		setState({ isFlipped: !state.isFlipped })
+		setFlipped(!isFlipped)
 	}
 
 	const getLang = () =>
 	{
-		if (state.isFlipped)
+		if (isFlipped)
 		{
 			return props.back.lang
 		}
@@ -48,7 +42,7 @@ export default (props: FlashCardProps) =>
 
 	const getText = () =>
 	{
-		if (state.isFlipped)
+		if (isFlipped)
 		{
 			return props.back.text
 		}
@@ -56,30 +50,13 @@ export default (props: FlashCardProps) =>
 		return props.front.text
 	}
 
-	const speak = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+	const handleSpeak = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
 	{
 		e.stopPropagation()
-
-		try
-		{
-			const audioCtx = new AudioContext()
-			const arrayBuffer = await api.tts.speak({
-				text: getText(),
-				locale: getLang().locale
-			})
-
-			audioCtx.decodeAudioData(arrayBuffer, audio =>
-			{
-				const audioBuf = audioCtx.createBufferSource()
-				audioBuf.buffer = audio
-				audioBuf.connect(audioCtx.destination)
-				audioBuf.start()
-			})
-		}
-		catch (err)
-		{
-			console.error('Error fetching audio', err)
-		}
+		speak({
+			lang: getLang(),
+			text: getText()
+		})
 	}
 
 	const star = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
@@ -89,14 +66,14 @@ export default (props: FlashCardProps) =>
 	}
 
 	return (
-		<div className={ `${ styles.flashCard } ${ state.isFlipped ? styles.flipped : '' }` } onClick={ flipCard }>
+		<div className={ `${ styles.flashCard } ${ isFlipped ? styles.flipped : '' }` } onClick={ flipCard }>
 			<div className={ styles.content }>
 				<div className={ styles.front }>
 					{ props.starred
 						? <ActiveStarIcon className={ styles.button } width='24' height='24' onClick={ star } />
 						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
 					<p>{ props.front.text }</p>
-					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ speak } />
+					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ handleSpeak } />
 				</div>
 
 				<div className={ styles.back }>
@@ -104,7 +81,7 @@ export default (props: FlashCardProps) =>
 						? <ActiveStarIcon className={ styles.button } width='24' height='24' onClick={ star } />
 						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
 					<p>{ props.back.text }</p>
-					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ speak } />
+					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ handleSpeak } />
 				</div>
 			</div>
 		</div>

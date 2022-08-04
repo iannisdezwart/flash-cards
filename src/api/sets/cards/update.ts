@@ -23,7 +23,9 @@ export default async (req: RequestModel) =>
 	await request({
 		method: 'PATCH',
 		endpoint: '/sets/cards',
-		apiToken,
+		headers: {
+			'Authorization': apiToken
+		},
 		body: {
 			action: 'update',
 			...req

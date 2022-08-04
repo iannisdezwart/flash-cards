@@ -1,0 +1,49 @@
+.mc-choice
+	position: relative
+	width: 364px
+	padding: 1rem 0
+	margin: 1.25rem 0
+	border-radius: 0.5rem
+
+	background-color: #393940
+	color: #CBD1DC
+	font-size: 1.5rem
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1)
+
+	cursor: pointer
+
+	display: flex
+	align-items: center
+	justify-content: center
+
+	transition: background-color 300ms ease-in-out
+
+	.key
+		position: absolute
+		left: .5rem
+		top: 50%
+		transform: translateY(-50%)
+
+		padding: .25rem
+		background-color: rgba(0, 0, 0, 0.3)
+		font-size: 1rem
+		width: 1.5rem
+		height: 1.5rem
+		text-align: center
+		border-radius: 5px
+		color: #67696C
+
+		transition: color 300ms ease-in-out
+
+	&.correct
+		background-color: #88AD64
+		color: #F7FFEF
+
+		.key
+			color: #F7FFEF
+	&.incorrect
+		background-color: #EC7272
+		color: #FFEDED
+
+		.key
+			color: #F7FFEF

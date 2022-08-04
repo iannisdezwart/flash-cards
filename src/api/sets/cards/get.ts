@@ -21,8 +21,8 @@ export default async (setName: string) =>
 		method: 'GET',
 		endpoint: '/sets/cards',
 		headers: {
+			'Authorization': apiToken,
 			'X-Set-Name': setName
-		},
-		apiToken
+		}
 	}) as ResponseModel[]
 }

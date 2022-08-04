@@ -10,6 +10,7 @@ import { Lang } from '../util/langs'
 import api from '../api'
 import Popup from './Popup'
 import * as styles from './WordList.module.sass'
+import Paragraph from './Paragraph'
 
 interface Word
 {
@@ -192,7 +193,7 @@ export default (props: WordListProps) =>
 		</DraggableList>
 
 		<Popup visible={ loadSetError != null } title='Error loading set'>
-			<Heading size={ 1 } colour='#CBD1DC' text={ loadSetError! } />
+			<Paragraph colour='#CBD1DC' align='center' text={ loadSetError! } />
 		</Popup>
 	</> )
 }

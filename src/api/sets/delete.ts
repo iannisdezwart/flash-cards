@@ -17,7 +17,9 @@ export default async (req: RequestModel) =>
 	return await request({
 		method: 'DELETE',
 		endpoint: '/sets',
-		apiToken,
+		headers: {
+			'Authorization': apiToken
+		},
 		body: req
 	})
 }

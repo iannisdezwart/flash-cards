@@ -23,8 +23,8 @@ export default async (setName: string) =>
 		method: 'GET',
 		endpoint: '/sets',
 		headers: {
+			'Authorization': apiToken,
 			'X-Set-Name': setName
 		},
-		apiToken
 	}) as ResponseModel
 }

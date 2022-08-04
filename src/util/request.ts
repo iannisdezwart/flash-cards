@@ -4,7 +4,6 @@ interface RequestOptions
 	endpoint: string
 	body?: any
 	query?: { [ param: string ]: string }
-	apiToken?: string
 	headers?: { [ headerName: string ]: string }
 	output?: 'json' | 'arraybuffer'
 }
@@ -28,11 +27,6 @@ export const request = async (options: RequestOptions) =>
 	}
 
 	const headers: { [ key: string ]: string } = options.headers || {}
-
-	if (options.apiToken)
-	{
-		headers['Authorization'] = options.apiToken
-	}
 
 	const res = await fetch(API_URL + options.endpoint + queryParams, {
 		method: options.method,

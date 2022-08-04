@@ -26,7 +26,9 @@ export default async (req: RequestModel) =>
 	return await request({
 		method: 'POST',
 		endpoint: '/sets/cards',
-		apiToken,
+		headers: {
+			'Authorization': apiToken
+		},
 		body: req
 	}) as ResponseModel
 }

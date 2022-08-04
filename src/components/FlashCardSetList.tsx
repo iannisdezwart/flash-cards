@@ -11,6 +11,7 @@ import * as styles from './FlashCardSetList.module.sass'
 import { Lang } from '../util/langs'
 import api from '../api'
 import Popup from './Popup'
+import Paragraph from './Paragraph'
 
 export default () =>
 {
@@ -76,7 +77,7 @@ export default () =>
 		</DraggableList>
 
 		<Popup visible={ loadSetsError != null } title='Error loading sets'>
-			<Heading size={ 1 } colour='#CBD1DC' text={ loadSetsError! } />
+			<Paragraph colour='#CBD1DC' align='center' text={ loadSetsError! } />
 		</Popup>
 	</> )
 }

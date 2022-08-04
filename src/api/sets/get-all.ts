@@ -22,6 +22,8 @@ export default async () =>
 	return await request({
 		method: 'GET',
 		endpoint: '/sets',
-		apiToken
+		headers: {
+			'Authorization': apiToken
+		}
 	}) as ResponseModel[]
 }

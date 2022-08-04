@@ -8,6 +8,9 @@ import setsCardsAdd from './sets/cards/add'
 import setsCardsDelete from './sets/cards/delete'
 import setsCardsUpdate from './sets/cards/update'
 import setsCardsReorder from './sets/cards/reorder'
+import setsCardsSetStarred from './sets/cards/set-starred'
+import setsCardsLearnGet from './sets/cards/learn/get'
+import setsCardsLearnAnswer from './sets/cards/learn/answer'
 import authLogin from './auth/login'
 import authSignup from './auth/signup'
 import ttsSpeak from './tts/speak'
@@ -24,7 +27,12 @@ export default {
 			add: setsCardsAdd,
 			delete: setsCardsDelete,
 			update: setsCardsUpdate,
-			reorder: setsCardsReorder
+			reorder: setsCardsReorder,
+			setStarred: setsCardsSetStarred,
+			learn: {
+				get: setsCardsLearnGet,
+				answer: setsCardsLearnAnswer
+			}
 		}
 	},
 	auth: {

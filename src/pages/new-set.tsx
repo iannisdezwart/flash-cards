@@ -15,6 +15,7 @@ import { Lang } from '../util/langs'
 import FloatingButton from '../components/FloatingButton'
 import api from '../api'
 import { Helmet } from 'react-helmet'
+import Paragraph from '../components/Paragraph'
 
 export default () =>
 {
@@ -102,7 +103,7 @@ export default () =>
 		/>
 
 		<Popup visible={ backClicked } title='Are you sure?'>
-			<Heading text='If you go back, the new set will not be saved.' size={ 1 } colour='#CBD1DC' />
+			<Paragraph colour='#CBD1DC' align='center' text='If you go back, the new set will not be saved.' />
 			<HorizontalFlexbox>
 				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ () => setBackClicked(false) }></Button>
 				<Button bgColour='#EC7272' fgColour='#fff' text='Discard set' onClick={ () => navigate('/sets') }></Button>
@@ -110,7 +111,7 @@ export default () =>
 		</Popup>
 
 		<Popup visible={ saveErr != null } title='Error'>
-			<Heading text={ saveErr! } size={ 1 } colour='#CBD1DC' />
+			<Paragraph colour='#CBD1DC' align='center' text={ saveErr! } />
 		</Popup>
 
 		<FloatingButton Icon={ CheckIcon } colour='#88AD64' onClick={ saveSet } />

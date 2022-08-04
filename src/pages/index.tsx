@@ -6,6 +6,7 @@ import validateToken from '../api/auth/validate-token'
 import Button from '../components/Button'
 import Heading from '../components/Heading'
 import Padding from '../components/Padding'
+import Paragraph from '../components/Paragraph'
 import VerticalFlexbox from '../components/VerticalFlexbox'
 
 export default () =>
@@ -71,17 +72,17 @@ export default () =>
 
 	return ( <>
 		<Helmet>
-			<title>Log In | Flashcards</title>
+			<title>Log In | Flash Cards</title>
 		</Helmet>
 
 		<VerticalFlexbox>
-			<Heading text='Flashcards' />
+			<Heading text='Flash cards' />
 			<Padding vertical={ 16 } />
 			<Heading text='Log in' size={ 2.5 } colour='#CBD1DC' />
 
 			<input ref={ usernameRef } className='big-input' type='text' placeholder='Username' onKeyUp={ enterSubmitsForm } />
 			<input ref={ passwordRef } className='big-input' type='password' placeholder='Password' onKeyUp={ enterSubmitsForm } />
-			{ inputErr && <Heading text={ inputErr } size={ 1.25 } colour='#EC7272' /> }
+			{ inputErr && <Paragraph colour='#CBD1DC' size={ 1.25 } align='center' text={ inputErr } /> }
 
 			<div>
 				<Button text='Log in' fgColour='#fff' bgColour='#88AD64' onClick={ logIn } size={ 1.25 } />
