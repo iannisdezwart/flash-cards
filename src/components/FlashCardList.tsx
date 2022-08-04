@@ -76,7 +76,7 @@ export default (props: FlashCardListProps) => {
 					back={{ lang: langBack, text: card.back }}
 					starred={ card.starred }
 					onToggleStar={ () => toggleStar(i) }
-					key={ i } />
+					key={ `${ card.id }-${ i }` } />
 			)) }
 		</div>
 

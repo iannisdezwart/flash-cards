@@ -96,6 +96,12 @@ export default (props: WordListProps) =>
 
 		if (!props.synchroniseWithServer)
 		{
+			if (type === 'new-word')
+			{
+				newWords[index].id = Math.floor(Math.random() * 1E9)
+			}
+
+			setWords(newWords)
 			return
 		}
 
@@ -130,6 +136,8 @@ export default (props: WordListProps) =>
 
 	const deleteWord = (cardId: number) =>
 	{
+		setWords(words.filter(word => word.id != cardId))
+
 		if (!props.synchroniseWithServer)
 		{
 			return
@@ -139,8 +147,6 @@ export default (props: WordListProps) =>
 			setName: props.setName,
 			cardId
 		})
-
-		setWords(words.filter(word => word.id != cardId))
 	}
 
 	const reorderWords = (oldIndex: number, newIndex: number) =>
@@ -178,7 +184,7 @@ export default (props: WordListProps) =>
 					new={ word.new }
 					starred={ word.starred }
 					canBeStarred={ word.id != null }
-					key={ i }
+					key={ `${ word.id }-${ i }` }
 					onChange={ (newFront, newBack, starred, type) => updateWord(i, newFront, newBack, starred, type) }
 					onDelete={ () => deleteWord(word.id!) }
 				/>
