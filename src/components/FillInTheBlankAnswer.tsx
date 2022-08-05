@@ -48,6 +48,7 @@ export default (props: MultipleChoiceAnswerProps) =>
 
 		<div className={ styles.fillInTheBlank }>
 			<input
+				type='text'
 				ref={ inputRef }
 				className={ classNames({
 					'big-input': true,
@@ -55,7 +56,7 @@ export default (props: MultipleChoiceAnswerProps) =>
 					[styles.incorrect]: props.isCorrect != null && !props.isCorrect
 				}) }
 				placeholder={ `Enter ${ props.answerLang.name }` }
-				onKeyUp={ enterSubmitsAnswer }
+				onKeyDown={ enterSubmitsAnswer }
 			/>
 
 			<div className={ styles.floatingIcon }

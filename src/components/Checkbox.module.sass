@@ -1,0 +1,39 @@
+.checkbox
+	position: relative
+	cursor: pointer
+
+	input
+		position: absolute
+		height: 0
+		width: 0
+
+	.fake-checkbox
+		position: absolute
+		top: 0
+		left: 0
+		height: 28px
+		width: 28px
+		border-radius: 5px
+		background-color: #232328
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1)
+
+		svg
+			content: ''
+			position: absolute
+			left: -4px
+			top: -3px
+			opacity: 0
+			visibility: hidden
+			transition: opacity 150ms ease-in-out, visibility 150ms ease-in-out
+
+	input:checked ~ .fake-checkbox svg
+		opacity: 1
+		visibility: visible
+		content: '*'
+
+	label
+		margin-left: 44px
+		color: #CBD1DC
+		cursor: pointer
+		font-size: 18px
+		white-space: nowrap

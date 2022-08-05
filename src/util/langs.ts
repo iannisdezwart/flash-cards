@@ -61,7 +61,7 @@ export class Lang
 
 	static fromLocale(locale: Locale)
 	{
-		return Lang.all.find(lang => lang.locale == locale)
+		return Lang.all.find(lang => lang.locale == locale) || Lang.unknown
 	}
 
 	static all = ([

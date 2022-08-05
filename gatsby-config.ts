@@ -10,13 +10,6 @@ export default {
 	plugins: [
 		'gatsby-plugin-sass',
 		'gatsby-plugin-react-svg',
-		'gatsby-transformer-json',
-		{
-			resolve: 'gatsby-source-filesystem',
-			options: {
-				name: 'flashcard_sets',
-				path: `${ __dirname }/src/flashcard-sets/`
-			}
-		}
+		'gatsby-transformer-json'
 	]
 }

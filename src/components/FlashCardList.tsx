@@ -3,7 +3,6 @@ import api from '../api'
 import { Lang } from '../util/langs'
 import FlashCard from './FlashCard'
 import * as styles from './FlashCardList.module.sass'
-import Heading from './Heading'
 import Paragraph from './Paragraph'
 import Popup from './Popup'
 
@@ -35,8 +34,8 @@ export default (props: FlashCardListProps) => {
 				await api.sets.cards.get(props.setName)
 			])
 
-			setLangFront(Lang.fromLocale(set.localeFront) || Lang.unknown)
-			setLangBack(Lang.fromLocale(set.localeBack) || Lang.unknown)
+			setLangFront(Lang.fromLocale(set.localeFront))
+			setLangBack(Lang.fromLocale(set.localeBack))
 			setCards(cards)
 		}
 		catch (err)

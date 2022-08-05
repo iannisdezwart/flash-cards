@@ -16,6 +16,7 @@ import FloatingButton from '../components/FloatingButton'
 import api from '../api'
 import { Helmet } from 'react-helmet'
 import Paragraph from '../components/Paragraph'
+import VerticalFlexbox from '../components/VerticalFlexbox'
 
 export default () =>
 {
@@ -81,7 +82,9 @@ export default () =>
 			</ClickDetector>
 		} />
 
-		<input ref={ setNameRef } className='big-input' type='text' placeholder='Set name' />
+		<VerticalFlexbox>
+			<input ref={ setNameRef } className='big-input' type='text' placeholder='Set name' />
+		</VerticalFlexbox>
 
 		<Padding vertical={ 16 } />
 

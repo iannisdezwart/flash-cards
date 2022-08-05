@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import api from '../api'
 import SpeakerIcon from '../icons/speaker.svg'
 import StarIcon from '../icons/star.svg'
 import ActiveStarIcon from '../icons/star-active.svg'
+import InfoIcon from '../icons/info.svg'
 import { Lang } from '../util/langs'
 import * as styles from './FlashCard.module.sass'
 import { speak } from '../util/speak'
@@ -18,6 +18,7 @@ export interface FlashCardProps
 	front: FlashCardContent
 	back: FlashCardContent
 	starred: boolean
+	details?: React.ReactNode
 	onToggleStar: () => void
 }
 
@@ -74,6 +75,14 @@ export default (props: FlashCardProps) =>
 						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
 					<p>{ props.front.text }</p>
 					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ handleSpeak } />
+					{ props.details &&
+						<div className={ styles.details }>
+							<InfoIcon />
+							<div className={ styles.inner }>
+								{ props.details }
+							</div>
+						</div>
+					}
 				</div>
 
 				<div className={ styles.back }>
@@ -82,6 +91,14 @@ export default (props: FlashCardProps) =>
 						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
 					<p>{ props.back.text }</p>
 					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ handleSpeak } />
+					{ props.details &&
+						<div className={ styles.details }>
+							<InfoIcon />
+							<div className={ styles.inner }>
+								{ props.details }
+							</div>
+						</div>
+					}
 				</div>
 			</div>
 		</div>
