@@ -1,4 +1,5 @@
 import { request } from '../../util/request'
+import { LocalStorage } from '../../util/storage'
 
 interface ResponseModel
 {
@@ -7,7 +8,7 @@ interface ResponseModel
 
 export default async () =>
 {
-	const apiToken = localStorage.getItem('api-token')
+	const apiToken = LocalStorage.get('api-token')
 
 	if (apiToken == null)
 	{

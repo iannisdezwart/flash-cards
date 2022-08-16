@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { navigate, PageProps } from 'gatsby'
 import Heading from '../components/Heading'
 import FlashCardList from '../components/FlashCardList'
@@ -11,11 +11,13 @@ export default (props: PageProps) =>
 {
 	const setName = new URLSearchParams(props.location.search).get('set')
 
-	if (setName == null)
+	useEffect(() =>
 	{
-		navigate('/sets')
-		return null
-	}
+		if (setName == null)
+		{
+			navigate('/sets')
+		}
+	}, [])
 
 	return (<>
 		<Helmet>
@@ -27,6 +29,9 @@ export default (props: PageProps) =>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} />
-		<FlashCardList setName={ setName } />
+
+		{ setName != null &&
+			<FlashCardList setName={ setName } />
+		}
 	</>)
 }

@@ -8,12 +8,13 @@ import Heading from '../components/Heading'
 import VerticalFlexbox from '../components/VerticalFlexbox'
 import SetsIcon from '../icons/sets.svg'
 import CollectionsIcon from '../icons/collections.svg'
+import { LocalStorage } from '../util/storage'
 
 export default () =>
 {
 	const logOut = () =>
 	{
-		localStorage.removeItem('api-token')
+		LocalStorage.remove('api-token')
 		navigate('/')
 	}
 

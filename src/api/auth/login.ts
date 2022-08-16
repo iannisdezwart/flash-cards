@@ -1,4 +1,5 @@
 import { request } from '../../util/request'
+import { LocalStorage } from '../../util/storage'
 
 export default async (username: string, password: string) =>
 {
@@ -8,5 +9,5 @@ export default async (username: string, password: string) =>
 		body: { username, password }
 	}) as { token: string }
 
-	localStorage.setItem('api-token', token)
+	LocalStorage.set('api-token', token)
 }

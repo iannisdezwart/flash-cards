@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { navigate, PageProps } from 'gatsby'
 import Heading from '../components/Heading'
 import ActionListItem from '../components/ActionListItem'
@@ -18,9 +18,16 @@ export default (props: PageProps) =>
 {
 	const setName = new URLSearchParams(props.location.search).get('name')
 
+	useEffect(() =>
+	{
+		if (setName == null)
+		{
+			navigate('/sets')
+		}
+	})
+
 	if (setName == null)
 	{
-		navigate('/sets')
 		return null
 	}
 

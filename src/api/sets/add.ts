@@ -1,5 +1,6 @@
 import { Locale } from '../../util/langs'
 import { request } from '../../util/request'
+import { LocalStorage } from '../../util/storage'
 
 interface RequestModel
 {
@@ -14,7 +15,7 @@ interface RequestModel
 
 export default async (req: RequestModel) =>
 {
-	const apiToken = localStorage.getItem('api-token')
+	const apiToken = LocalStorage.get('api-token')
 
 	if (apiToken == null)
 	{

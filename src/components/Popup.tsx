@@ -25,6 +25,11 @@ export default (props: PopupProps) =>
 		transition: 'visibility 150ms ease-in, opacity 150ms ease-in'
 	}
 
+	if (typeof document == 'undefined')
+	{
+		return null
+	}
+
 	return createPortal(
 		<div className={ styles.popup } style={ style }>
 			<Heading text={ props.title } size={ 2 } colour='#CBD1DC' trailingIcon={

@@ -1,8 +1,9 @@
 import { request } from '../../util/request'
+import { LocalStorage } from '../../util/storage'
 
 export default async (oldIndex: number, newIndex: number) =>
 {
-	const apiToken = localStorage.getItem('api-token')
+	const apiToken = LocalStorage.get('api-token')
 
 	if (apiToken == null)
 	{

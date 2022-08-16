@@ -30,9 +30,16 @@ export default (props: PageProps) =>
 {
 	const setName = new URLSearchParams(props.location.search).get('set')
 
+	useEffect(() =>
+	{
+		if (setName == null)
+		{
+			navigate('/sets')
+		}
+	}, [])
+
 	if (setName == null)
 	{
-		navigate('/sets')
 		return null
 	}
 
@@ -463,7 +470,11 @@ export default (props: PageProps) =>
 			<FloatingButton Icon={ ArrowRight } colour='#88AD64' onClick={ nextRound } />
 		</VerticalFlexbox> }
 
-		<Popup visible={ loadSetError != null } title='Error loading sets'>
+		<Popup
+			visible={ loadSetError != null }
+			title='Error loading sets'
+			onClose={ () => setLoadSetError(undefined) }
+		>
 			<Paragraph colour='#CBD1DC' align='center' text={ loadSetError! } />
 		</Popup>
 
@@ -471,7 +482,11 @@ export default (props: PageProps) =>
 			<BottomProgressBar progress={ learnItemIndex / learnData.items.length } />
 		}
 
-		<Popup visible={ settingsOpen } title='Settings'>
+		<Popup
+			visible={ settingsOpen }
+			title='Settings'
+			onClose={ () => setSettingsOpen(false) }
+		>
 			<VerticalFlexbox crossAxisAlignment='flex-start'>
 				<Heading text='Learning direction' size={ 0.875 } colour='#67696C' align='start' />
 

@@ -17,6 +17,7 @@ import api from '../api'
 import { Helmet } from 'react-helmet'
 import Paragraph from '../components/Paragraph'
 import VerticalFlexbox from '../components/VerticalFlexbox'
+import { LocalStorage } from '../util/storage'
 
 export default () =>
 {
@@ -41,7 +42,7 @@ export default () =>
 
 	const saveSet = async () =>
 	{
-		const apiToken = localStorage.getItem('api-token')
+		const apiToken = LocalStorage.get('api-token')
 
 		if (apiToken == null)
 		{
@@ -105,7 +106,11 @@ export default () =>
 			}] }
 		/>
 
-		<Popup visible={ backClicked } title='Are you sure?'>
+		<Popup
+			visible={ backClicked }
+			onClose={ () => navigate('/sets') }
+			title='Are you sure?'
+		>
 			<Paragraph colour='#CBD1DC' align='center' text='If you go back, the new set will not be saved.' />
 			<HorizontalFlexbox>
 				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ () => setBackClicked(false) }></Button>
@@ -113,7 +118,11 @@ export default () =>
 			</HorizontalFlexbox>
 		</Popup>
 
-		<Popup visible={ saveErr != null } title='Error'>
+		<Popup
+			visible={ saveErr != null }
+			onClose={ () => setSaveErr(undefined) }
+			title='Error'
+		>
 			<Paragraph colour='#CBD1DC' align='center' text={ saveErr! } />
 		</Popup>
 

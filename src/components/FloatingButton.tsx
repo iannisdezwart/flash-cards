@@ -13,6 +13,11 @@ interface FloatingButtonProps
 
 export default (props: FloatingButtonProps) =>
 {
+	if (typeof document == 'undefined')
+	{
+		return null
+	}
+
 	return createPortal(
 		<ClickDetector onClick={ props.onClick }>
 			<div className={ styles.floatingButton } style={{ backgroundColor: props.colour }}>

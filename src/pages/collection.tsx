@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { navigate, PageProps } from 'gatsby'
 import Heading from '../components/Heading'
 import Padding from '../components/Padding'
@@ -20,9 +20,16 @@ export default (props: PageProps) =>
 
 	const collectionName = new URLSearchParams(props.location.search).get('name')
 
+	useEffect(() =>
+	{
+		if (collectionName == null)
+		{
+			navigate('/collections')
+		}
+	}, [])
+
 	if (collectionName == null)
 	{
-		navigate('/collections')
 		return null
 	}
 

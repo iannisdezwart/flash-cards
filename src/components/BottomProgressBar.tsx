@@ -9,6 +9,11 @@ interface BottomProgressBarProps
 
 export default (props: BottomProgressBarProps) =>
 {
+	if (typeof document == 'undefined')
+	{
+		return null
+	}
+
 	return createPortal(
 		<div className={ styles.bottomProgressBar } style={{ '--progress': props.progress } as CSSProperties}>
 			<div className={ styles.inner }></div>

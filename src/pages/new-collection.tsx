@@ -14,6 +14,7 @@ import api from '../api'
 import { Helmet } from 'react-helmet'
 import Paragraph from '../components/Paragraph'
 import VerticalFlexbox from '../components/VerticalFlexbox'
+import { LocalStorage } from '../util/storage'
 
 export default () =>
 {
@@ -31,7 +32,7 @@ export default () =>
 
 	const saveCollection = async () =>
 	{
-		const apiToken = localStorage.getItem('api-token')
+		const apiToken = LocalStorage.get('api-token')
 
 		if (apiToken == null)
 		{

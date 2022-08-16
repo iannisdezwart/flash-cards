@@ -1,31 +1,35 @@
 import { navigate } from 'gatsby'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Helmet from 'react-helmet'
 import validateToken from '../api/auth/validate-token'
 import Heading from '../components/Heading'
 import VerticalFlexbox from '../components/VerticalFlexbox'
+import { LocalStorage } from '../util/storage'
 
 export default () =>
 {
-	if (localStorage.getItem('api-token') != null)
+	useEffect(() =>
 	{
-		(async () =>
+		if (LocalStorage.get('api-token') != null)
 		{
-			if (await validateToken())
+			(async () =>
 			{
-				navigate('/home')
-			}
-			else
-			{
-				localStorage.removeItem('api-token')
-				navigate('/login')
-			}
-		})()
-	}
-	else
-	{
-		navigate('/login')
-	}
+				if (await validateToken())
+				{
+					navigate('/home')
+				}
+				else
+				{
+					LocalStorage.remove('api-token')
+					navigate('/login')
+				}
+			})()
+		}
+		else
+		{
+			navigate('/login')
+		}
+	}, [])
 
 	return ( <>
 		<Helmet>
