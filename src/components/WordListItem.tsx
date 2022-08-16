@@ -155,7 +155,12 @@ export default (props: WordListItemProps) =>
 				</ClickDetector>
 			}
 		</div>
-		<Popup visible={ deleteClicked } title='Are you sure?'>
+
+		<Popup
+			visible={ deleteClicked }
+			onClose={ deleteWordCancel }
+			title='Are you sure?'
+		>
 			<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteWordCancel }></Button>
 			<Button bgColour='#EC7272' fgColour='#fff' text='Delete word' onClick={ deleteWordConfirm }></Button>
 		</Popup>

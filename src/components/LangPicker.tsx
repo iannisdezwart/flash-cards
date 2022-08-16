@@ -45,7 +45,7 @@ export default (props: LangPickerProps) =>
 
 	const scrollableListRef = createRef<HTMLDivElement>()
 
-	const setLangBeingEdited = (langBeingEdited: 'from' | 'to') =>
+	const setLangBeingEdited = (langBeingEdited: 'from' | 'to' | undefined) =>
 	{
 		scrollableListRef.current!.scrollTo({ top: 0 })
 		pickerSearchRef.current!.value = ''
@@ -77,7 +77,11 @@ export default (props: LangPickerProps) =>
 				<Flag locale={ langBack.locale } size={ 1.5 } />
 			</ClickDetector>
 
-			<Popup title='Choose language' visible={ langBeingEdited != null }>
+			<Popup
+				title='Choose language'
+				visible={ langBeingEdited != null }
+				onClose={ () => setLangBeingEdited(undefined) }
+			>
 				<input ref={ pickerSearchRef } className='full-width dark' placeholder='Search...' onChange={ updatePickerSearch } />
 				<ScrollableList ref={ scrollableListRef } height='70vh' width='300px'>
 					{ pickableLangs.map((lang, i) => (

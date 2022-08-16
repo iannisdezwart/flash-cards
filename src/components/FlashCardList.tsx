@@ -76,7 +76,11 @@ export default (props: FlashCardListProps) => {
 			)) }
 		</div>
 
-		<Popup visible={ loadSetError != null } title='Error loading set'>
+		<Popup
+			visible={ loadSetError != null }
+			onClose={ () => setLoadSetError(undefined) }
+			title='Error loading set'
+		>
 			<Paragraph colour='#CBD1DC' align='center' text={ loadSetError! } />
 		</Popup>
 	</> )
