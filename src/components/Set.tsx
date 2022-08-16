@@ -1,24 +1,26 @@
 import React, { useState } from 'react'
 import Flag from './Flag'
-import * as styles from './FlashCardSet.module.sass'
+import * as styles from './Set.module.sass'
 import DeleteIcon from '../icons/delete.svg'
 import { navigate } from 'gatsby'
 import SideSwipable from './SideSwipable'
 import { Lang } from '../util/langs'
-import api from '../api'
 import Popup from './Popup'
 import Button from './Button'
 import Paragraph from './Paragraph'
+import HorizontalFlexbox from './HorizontalFlexbox'
 
-export interface FlashCardSetProps
+export interface SetProps
 {
 	name: string
 	langFront: Lang
 	langBack: Lang
 	onDelete?: () => void
+	deleteMessage?: string
+	deleteConfirm?: string
 }
 
-export default (props: FlashCardSetProps) =>
+export default (props: SetProps) =>
 {
 	const [ deleteSetErr, setDeleteSetErr ] = useState<string>()
 	const [ deleteClicked, setDeleteClicked ] = useState(false)
@@ -38,10 +40,6 @@ export default (props: FlashCardSetProps) =>
 	{
 		try
 		{
-			await api.sets.delete({
-				setName: props.name
-			})
-
 			props.onDelete?.()
 		}
 		catch (err)
@@ -56,7 +54,7 @@ export default (props: FlashCardSetProps) =>
 	}
 
 	return (
-		<div className={ styles.flashCardSet }>
+		<div className={ styles.set }>
 			<SideSwipable
 				rightIcon={{
 					Icon: DeleteIcon,
@@ -73,13 +71,27 @@ export default (props: FlashCardSetProps) =>
 				</div>
 			</SideSwipable>
 
-			<Popup visible={ deleteSetErr != null } title='Error deleting set'>
+			<Popup
+				visible={ deleteSetErr != null }
+				title='Error deleting set'
+				onClose={ () => setDeleteSetErr(undefined) }
+			>
 				<Paragraph colour='#CBD1DC' align='center' text={ deleteSetErr! } />
 			</Popup>
 
-			<Popup visible={ deleteClicked } title='Are you sure?'>
-				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteSetCancel }></Button>
-				<Button bgColour='#EC7272' fgColour='#fff' text='Delete set' onClick={ deleteSetConfirm }></Button>
+			<Popup
+				visible={ deleteClicked }
+				title='Are you sure?'
+				onClose={ deleteSetCancel }
+			>
+				{ props.deleteMessage &&
+					<Paragraph colour='#CBD1DC' align='center' text={ props.deleteMessage } />
+				}
+				<HorizontalFlexbox>
+					<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteSetCancel } />
+					<Button bgColour='#EC7272' fgColour='#fff' text={ props.deleteConfirm ?? 'Delete set' }
+						onClick={ deleteSetConfirm } />
+				</HorizontalFlexbox>
 			</Popup>
 		</div>
 	)

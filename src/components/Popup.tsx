@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createPortal } from 'react-dom'
+import ClickDetector from './ClickDetector'
+import Heading from './Heading'
+import CloseIcon from '../icons/close.svg'
 import * as styles from './Popup.module.sass'
 
 interface PopupProps
@@ -7,6 +10,7 @@ interface PopupProps
 	title: string
 	visible: boolean
 	children?: React.ReactNode
+	onClose: () => void
 }
 
 export default (props: PopupProps) =>
@@ -23,7 +27,11 @@ export default (props: PopupProps) =>
 
 	return createPortal(
 		<div className={ styles.popup } style={ style }>
-			<h1 className={ styles.heading }>{ props.title }</h1>
+			<Heading text={ props.title } size={ 2 } colour='#CBD1DC' trailingIcon={
+				<ClickDetector onClick={ props.onClose }>
+					<CloseIcon />
+				</ClickDetector>
+			} />
 			{ props.children }
 		</div>,
 		document.body

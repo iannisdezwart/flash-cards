@@ -1,38 +1,38 @@
 import React from 'react'
-import { navigate } from 'gatsby'
-import SetList from '../components/SetList'
 import './global.sass'
 import { Helmet } from 'react-helmet'
+import CollectionList from '../components/CollectionList'
+import BackIcon from '../icons/back.svg'
 import Heading from '../components/Heading'
 import ClickDetector from '../components/ClickDetector'
 import SvgIcon from '../components/SvgIcon'
 import PlusIcon from '../icons/plus.svg'
-import BackIcon from '../icons/back.svg'
+import { navigate } from 'gatsby'
 
 export default () => {
-	const addSet = () =>
+	const addCollection = () =>
 	{
-		navigate('/new-set')
+		navigate('/new-collection')
 	}
 
 	return ( <>
 		<Helmet>
-			<title>Sets | Flashcards</title>
+			<title>Collections | Flashcards</title>
 		</Helmet>
 
-		<Heading text='Sets'
+		<Heading text='Collections'
 			leadingIcon={
 				<ClickDetector onClick={ () => navigate('/home') }>
 					<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 				</ClickDetector>
 			}
 			trailingIcon={
-				<ClickDetector onClick={ addSet }>
+				<ClickDetector onClick={ addCollection }>
 					<SvgIcon Icon={ PlusIcon } width={ 32 } height={ 32 } />
 				</ClickDetector>
 			}
 		/>
 
-		<SetList noSetsError={`You don't have any sets. Tap the plus icon to create your first set!`} />
+		<CollectionList />
 	</> )
 }

@@ -1,6 +1,12 @@
 import { Locale } from '../../util/langs'
 import { request } from '../../util/request'
 
+interface RequestModel
+{
+	ofCollection?: string
+	fitsCollection?: string
+}
+
 interface ResponseModel
 {
 	id: number
@@ -10,7 +16,7 @@ interface ResponseModel
 	localeBack: Locale
 }
 
-export default async () =>
+export default async (req: RequestModel) =>
 {
 	const apiToken = localStorage.getItem('api-token')
 
@@ -23,7 +29,13 @@ export default async () =>
 		method: 'GET',
 		endpoint: '/sets',
 		headers: {
-			'Authorization': apiToken
+			'Authorization': apiToken,
+			...(req.ofCollection != null && {
+				'X-Of-Collection': req.ofCollection
+			}),
+			...(req.fitsCollection != null && {
+				'X-Fits-Collection': req.fitsCollection
+			})
 		}
 	}) as ResponseModel[]
 }

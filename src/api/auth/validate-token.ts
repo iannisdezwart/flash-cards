@@ -17,7 +17,9 @@ export default async () =>
 	const res = await request({
 		method: 'GET',
 		endpoint: '/validate-token',
-		apiToken
+		headers: {
+			'Authorization': apiToken
+		}
 	}) as ResponseModel
 
 	return res.valid

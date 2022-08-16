@@ -192,7 +192,11 @@ export default (props: WordListProps) =>
 			)) }
 		</DraggableList>
 
-		<Popup visible={ loadSetError != null } title='Error loading set'>
+		<Popup
+			visible={ loadSetError != null }
+			title='Error loading set'
+			onClose={ () => setLoadSetError(undefined) }
+		>
 			<Paragraph colour='#CBD1DC' align='center' text={ loadSetError! } />
 		</Popup>
 	</> )
