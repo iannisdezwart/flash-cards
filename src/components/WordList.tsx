@@ -84,6 +84,14 @@ export default (props: WordListProps) =>
 				starred: false
 			}
 		])
+
+		setTimeout(() =>
+		{
+			window.scroll({
+				top: document.body.scrollHeight,
+				behavior: 'smooth'
+			})
+		}, 50)
 	}
 
 	const updateWord = async (index: number, newFront: string, newBack: string, starred: boolean, type: 'new-word' | 'update-word') =>
