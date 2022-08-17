@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideSwipable, { SideSwipableOnClickAction } from './SideSwipable'
 import EditIcon from '../icons/edit.svg'
 import DeleteIcon from '../icons/delete.svg'
@@ -12,6 +12,8 @@ import { Lang } from '../util/langs'
 import SvgIcon from './SvgIcon'
 import { classNames } from '../util/class-names'
 import ClickDetector from './ClickDetector'
+import api from '../api'
+import SuggestedWordList from './SuggestedWordList'
 
 interface Card
 {
@@ -38,6 +40,8 @@ export default (props: WordListItemProps) =>
 
 	const [ inEditMode, setEditMode ] = useState(props.new)
 	const [ deleteClicked, setDeleteClicked ] = useState(false)
+	const [ frontSuggestedWords, setFrontSuggestedWords ] = useState<string[]>([])
+	const [ backSuggestedWords, setBackSuggestedWords ] = useState<string[]>([])
 
 	const editWord = (): SideSwipableOnClickAction =>
 	{
@@ -48,6 +52,8 @@ export default (props: WordListItemProps) =>
 	const finishEditWord = () =>
 	{
 		setEditMode(false)
+		setFrontSuggestedWords([])
+		setBackSuggestedWords([])
 
 		const frontInput = frontInputRef.current?.value || ''
 		const backInput = backInputRef.current?.value || ''
@@ -93,6 +99,56 @@ export default (props: WordListItemProps) =>
 		</>)
 	}
 
+	const onInput = (inputFrom: HTMLInputElement, langFrom: Lang, langTo: Lang,
+		setter: React.Dispatch<React.SetStateAction<string[]>>) =>
+	{
+		const oldValue = inputFrom.value
+
+		setTimeout(async () => {
+			const value = inputFrom.value
+
+			if (value != oldValue)
+			{
+				return
+			}
+
+			try
+			{
+				const translations = await api.translate({
+					text: value,
+					from: langFrom,
+					to: langTo,
+				})
+
+
+				setter(translations)
+			}
+			catch (err)
+			{
+				console.error(err)
+			}
+		}, 750)
+	}
+
+	const onInputFrom = () => onInput(frontInputRef.current!,
+		props.front.lang, props.back.lang, setBackSuggestedWords)
+	const onInputTo = () => onInput(backInputRef.current!,
+		props.back.lang, props.front.lang, setFrontSuggestedWords)
+
+	const selectSuggestedFrontWord = (word: string) =>
+	{
+		frontInputRef.current!.value = word
+		frontInputRef.current!.focus()
+		setFrontSuggestedWords([])
+	}
+
+	const selectSuggestedBackWord = (word: string) =>
+	{
+		backInputRef.current!.value = word
+		backInputRef.current!.focus()
+		setBackSuggestedWords([])
+	}
+
 	const generateInnerInEditMode = () =>
 	{
 		const enterCapture = (e: React.KeyboardEvent) =>
@@ -104,8 +160,22 @@ export default (props: WordListItemProps) =>
 		}
 
 		return (<>
-			<input type="text" defaultValue={ props.front.text } placeholder={ `Enter ${ props.front.lang.name }...` } ref={ frontInputRef } onKeyUp={ enterCapture }/>
-			<input type="text" defaultValue={ props.back.text } placeholder={ `Enter ${ props.back.lang.name }...` } ref={ backInputRef } onKeyUp={ enterCapture }/>
+			<input
+				ref={ frontInputRef }
+				defaultValue={ props.front.text }
+				placeholder={ `Enter ${ props.front.lang.name }...` }
+				onKeyUp={ enterCapture }
+				onInput={ onInputFrom }
+				onBlur={ () => setTimeout(() => setBackSuggestedWords([]), 0) }
+			/>
+			<input
+				ref={ backInputRef }
+				defaultValue={ props.back.text }
+				placeholder={ `Enter ${ props.back.lang.name }...` }
+				onKeyUp={ enterCapture }
+				onInput={ onInputTo }
+				onBlur={ () => setTimeout(() => setFrontSuggestedWords([]), 0) }
+			/>
 		</>)
 	}
 
@@ -143,6 +213,21 @@ export default (props: WordListItemProps) =>
 					{ generateInner() }
 				</div>
 			</SideSwipable>
+
+			{ frontSuggestedWords.length > 0 &&
+				<SuggestedWordList
+					words={ frontSuggestedWords }
+					left={ 0.25 }
+					onSelect={ selectSuggestedFrontWord }
+				/>
+			}
+			{ backSuggestedWords.length > 0 &&
+				<SuggestedWordList
+					words={ backSuggestedWords }
+					left={ 0.75 }
+					onSelect={ selectSuggestedBackWord }
+				/>
+			}
 
 			{ props.canBeStarred &&
 				<ClickDetector onClick={ starWord }>

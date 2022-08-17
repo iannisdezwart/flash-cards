@@ -20,6 +20,7 @@ import collectionsDeleteSet from './collections/delete-set'
 import authLogin from './auth/login'
 import authSignup from './auth/signup'
 import ttsSpeak from './tts/speak'
+import translationTranslate from './translation/translate'
 
 export default {
 	sets: {
@@ -55,5 +56,6 @@ export default {
 	},
 	tts: {
 		speak: ttsSpeak
-	}
+	},
+	translate: translationTranslate
 }

@@ -59,6 +59,11 @@ export class Lang
 		return `${ this.name } (${ this.details })`
 	}
 
+	get langCode()
+	{
+		return this.locale.split('-')[0]
+	}
+
 	static fromLocale(locale: Locale)
 	{
 		return Lang.all.find(lang => lang.locale == locale) || Lang.unknown

@@ -1,3 +1,5 @@
+import { API_URL } from '../env'
+
 interface RequestOptions
 {
 	method: 'GET' | 'POST' | 'DELETE' | 'PATCH'
@@ -7,8 +9,6 @@ interface RequestOptions
 	headers?: { [ headerName: string ]: string }
 	output?: 'json' | 'arraybuffer'
 }
-
-const API_URL = 'https://flashcards-api.iannis.io'
 
 export const request = async (options: RequestOptions) =>
 {
