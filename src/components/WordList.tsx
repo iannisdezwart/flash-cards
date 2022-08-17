@@ -135,18 +135,18 @@ export default (props: WordListProps) =>
 		}
 	}
 
-	const deleteWord = (cardId: number) =>
+	const deleteWord = (word: Word) =>
 	{
-		setWords(words.filter(word => word.id != cardId))
+		setWords(words.filter(w => w != word))
 
-		if (!props.synchroniseWithServer)
+		if (!props.synchroniseWithServer || word.id == null)
 		{
 			return
 		}
 
 		api.sets.cards.delete({
 			setName: props.setName,
-			cardId
+			cardId: word.id
 		})
 	}
 
@@ -187,7 +187,7 @@ export default (props: WordListProps) =>
 					canBeStarred={ word.id != null }
 					key={ `${ word.id }-${ i }` }
 					onChange={ (newFront, newBack, starred, type) => updateWord(i, newFront, newBack, starred, type) }
-					onDelete={ () => deleteWord(word.id!) }
+					onDelete={ () => deleteWord(word) }
 				/>
 			)) }
 		</DraggableList>
