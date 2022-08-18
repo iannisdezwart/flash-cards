@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import RoundIcon from './RoundIcon'
 import * as styles from './SideSwipable.module.sass'
 
 export type SideSwipableOnClickAction = 'close' | 'keep-open' | void | Promise<void>
@@ -220,12 +221,12 @@ export default (props: SideSwipableProps) =>
 				</div>
 			</div>
 			{ props.floatingIcon &&
-				<div className={ styles.floatingIcon }
-					style={{ backgroundColor: props.floatingIcon.colour }}
-					onMouseUp={ props.floatingIcon.onClick }
-				>
-					<props.floatingIcon.Icon />
-				</div>
+				<RoundIcon
+					colour={ props.floatingIcon.colour }
+					onClick={ props.floatingIcon.onClick }
+					size={ props.iconSize }
+					Icon={ props.floatingIcon.Icon }
+				/>
 			}
 		</div>
 	)

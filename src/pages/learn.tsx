@@ -255,7 +255,6 @@ export default (props: PageProps) =>
 
 	const sendAnswer = async (learnItem: LearnItem, answer: string) =>
 	{
-		console.log('sendAnswer', learnItem, answer)
 		setQuestionAnswered(true)
 
 		const res = await api.sets.cards.learn.answer({

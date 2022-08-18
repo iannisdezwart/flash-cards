@@ -1,1 +1,0 @@
-- Allow changing the name of a set.

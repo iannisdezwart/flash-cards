@@ -10,9 +10,11 @@ import WordList from '../components/WordList'
 import Padding from '../components/Padding'
 import ClickDetector from '../components/ClickDetector'
 import BackIcon from '../icons/back.svg'
+import EditIcon from '../icons/edit-blue.svg'
 import SvgIcon from '../components/SvgIcon'
 import { Lang } from '../util/langs'
 import { Helmet } from 'react-helmet'
+import api from '../api'
 
 export default (props: PageProps) =>
 {
@@ -31,8 +33,9 @@ export default (props: PageProps) =>
 		return null
 	}
 
-	const [ langFront, setlangFront ] = useState<Lang>(Lang.unknown)
-	const [ langBack, setlangBack ] = useState<Lang>(Lang.unknown)
+	const [ langFront, setLangFront ] = useState<Lang>(Lang.unknown)
+	const [ langBack, setLangBack ] = useState<Lang>(Lang.unknown)
+	const [ titleIsBeingEdited, setTitleIsBeingEdited ] = useState(false)
 
 	const navigateToFlashcards = () =>
 	{
@@ -51,8 +54,22 @@ export default (props: PageProps) =>
 
 	const onWordListLoad = (setProps: { langFront: Lang, langBack: Lang }) =>
 	{
-		setlangFront(setProps.langFront)
-		setlangBack(setProps.langBack)
+		setLangFront(setProps.langFront)
+		setLangBack(setProps.langBack)
+	}
+
+	const onTitleEdit = async (title: string) =>
+	{
+		setTitleIsBeingEdited(false)
+
+		if (title == setName)
+		{
+			return
+		}
+
+		await api.sets.rename(setName, title)
+
+		navigate(`/set?name=${ title }`)
 	}
 
 	return ( <>
@@ -64,7 +81,11 @@ export default (props: PageProps) =>
 			<ClickDetector onClick={ () => navigate('/sets') }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
-		} />
+		} trailingIcon={
+			<ClickDetector onClick={ () => setTitleIsBeingEdited(true) }>
+				<SvgIcon Icon={ EditIcon } width={ 32 } height={ 32 } />
+			</ClickDetector>
+		} isBeingEdited={ titleIsBeingEdited } onEditSubmit={ onTitleEdit } />
 
 		<ActionList>
 			<ActionListItem icon={ FlashCardsIcon } text='Flashcards' action={ navigateToFlashcards } />
