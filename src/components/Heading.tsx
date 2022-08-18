@@ -61,6 +61,7 @@ export default (props: HeadingProps) =>
 						type='text'
 						style={ inputStyle }
 						defaultValue={ props.text }
+						onKeyUp={ e => e.code == 'Enter' && onEditSubmit() }
 					/>
 					<RoundIcon
 						colour='#88AD64'

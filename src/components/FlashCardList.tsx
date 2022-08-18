@@ -5,18 +5,12 @@ import FlashCard from './FlashCard'
 import * as styles from './FlashCardList.module.sass'
 import Paragraph from './Paragraph'
 import Popup from './Popup'
+import { ResponseModel as Word } from '../api/collections/cards/get'
 
 interface FlashCardListProps
 {
-	setName: string
-}
-
-interface Word
-{
-	id: number
-	front: string
-	back: string
-	starred: boolean
+	setName?: string
+	collectionName?: string
 }
 
 export default (props: FlashCardListProps) => {
@@ -29,10 +23,16 @@ export default (props: FlashCardListProps) => {
 	{
 		try
 		{
-			const [ set, cards ] = await Promise.all([
-				await api.sets.get(props.setName),
-				await api.sets.cards.get(props.setName)
-			])
+			const [ set, cards ] = await Promise.all(
+				props.setName != null
+					? [
+						await api.sets.get(props.setName),
+						await api.sets.cards.get(props.setName)
+					]
+					: [
+						await api.collections.get(props.collectionName!),
+						await api.collections.cards.get(props.collectionName!)
+					])
 
 			setLangFront(Lang.fromLocale(set.localeFront))
 			setLangBack(Lang.fromLocale(set.localeBack))
@@ -58,7 +58,7 @@ export default (props: FlashCardListProps) => {
 		setCards(newCards)
 
 		api.sets.cards.setStarred({
-			setName: props.setName,
+			setName: newCards[cardIndex].setName,
 			cardId: newCards[cardIndex].id,
 			starred: newCards[cardIndex].starred
 		})

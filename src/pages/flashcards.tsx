@@ -9,23 +9,31 @@ import { Helmet } from 'react-helmet'
 
 export default (props: PageProps) =>
 {
-	const setName = new URLSearchParams(props.location.search).get('set')
+	const searchParams = new URLSearchParams(props.location.search)
+	const setName = searchParams.get('set')
+	const collectionName = searchParams.get('collection')
 
 	useEffect(() =>
 	{
-		if (setName == null)
+		if (setName == null && collectionName == null)
 		{
 			navigate('/sets')
 		}
 	}, [])
 
-	return (<>
+	const backUrl = setName != null
+		? `/set?name=${ setName }`
+		: `/collection?name=${ collectionName }`
+
+	const title = setName != null ? setName : collectionName!
+
+	return ( <>
 		<Helmet>
-			<title>Flashcards | { setName } | Flashcards</title>
+			<title>Flashcards | { title } | Flashcards</title>
 		</Helmet>
 
 		<Heading text='Flashcards' leadingIcon={
-			<ClickDetector onClick={ () => navigate(`/set?name=${ setName }`) }>
+			<ClickDetector onClick={ () => navigate(backUrl) }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} />
@@ -33,5 +41,9 @@ export default (props: PageProps) =>
 		{ setName != null &&
 			<FlashCardList setName={ setName } />
 		}
-	</>)
+
+		{ collectionName != null &&
+			<FlashCardList collectionName={ collectionName } />
+		}
+	</> )
 }

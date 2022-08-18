@@ -13,11 +13,15 @@ import setsCardsReorder from './sets/cards/reorder'
 import setsCardsSetStarred from './sets/cards/set-starred'
 import setsCardsLearnGet from './sets/cards/learn/get'
 import setsCardsLearnAnswer from './sets/cards/learn/answer'
+import collectionsGet from './collections/get'
 import collectionsGetAll from './collections/get-all'
 import collectionsNew from './collections/add'
 import collectionsDelete from './collections/delete'
 import collectionsAddSet from './collections/add-set'
 import collectionsDeleteSet from './collections/delete-set'
+import collectionsRename from './collections/rename'
+import collectionsCardsGet from './collections/cards/get'
+import collectionsCardsLearnGet from './collections/cards/learn/get'
 import authLogin from './auth/login'
 import authSignup from './auth/signup'
 import ttsSpeak from './tts/speak'
@@ -46,11 +50,19 @@ export default {
 		}
 	},
 	collections: {
+		get: collectionsGet,
 		getAll: collectionsGetAll,
 		new: collectionsNew,
 		delete: collectionsDelete,
 		addSet: collectionsAddSet,
-		deleteSet: collectionsDeleteSet
+		deleteSet: collectionsDeleteSet,
+		rename: collectionsRename,
+		cards: {
+			get: collectionsCardsGet,
+			learn: {
+				get: collectionsCardsLearnGet,
+			}
+		}
 	},
 	auth: {
 		login: authLogin,

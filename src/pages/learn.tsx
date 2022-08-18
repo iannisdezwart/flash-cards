@@ -28,17 +28,19 @@ import HorizontalFlexbox from '../components/HorizontalFlexbox'
 
 export default (props: PageProps) =>
 {
-	const setName = new URLSearchParams(props.location.search).get('set')
+	const searchParams = new URLSearchParams(props.location.search)
+	const setName = searchParams.get('set')
+	const collectionName = searchParams.get('collection')
 
 	useEffect(() =>
 	{
-		if (setName == null)
+		if (setName == null && collectionName == null)
 		{
 			navigate('/sets')
 		}
 	}, [])
 
-	if (setName == null)
+	if (setName == null && collectionName == null)
 	{
 		return null
 	}
@@ -53,7 +55,7 @@ export default (props: PageProps) =>
 	const [ correctAnswer, setCorrectAnswer ] = useState<string>()
 	const [ isCorrect, setCorrect ] = useState<boolean>()
 	const [ numCorrectAnswers, setNumCorrectAnswers ] = useState(0)
-	const [ wrongAnswerCardIds, setWrongAnswerCardIds ] = useState<Set<number>>(new Set())
+	const [ wrongAnswerLearnItems, setWrongAnswerLearnItems ] = useState<LearnItem[]>([])
 	const [ learnDetails, setLearnDetails ] = useState<{
 		knowledgeLevel: number
 		knowledgeLevelDelta: number
@@ -81,7 +83,7 @@ export default (props: PageProps) =>
 		setCorrectAnswer(undefined)
 		setCorrect(undefined)
 		setNumCorrectAnswers(0)
-		setWrongAnswerCardIds(new Set())
+		setWrongAnswerLearnItems([])
 		setLearnDetails(undefined)
 		setRoundFinished(false)
 		setDifficultWords(undefined)
@@ -151,16 +153,29 @@ export default (props: PageProps) =>
 	{
 		try
 		{
-			const [ set, learnData ] = await Promise.all([
-				api.sets.get(setName),
-				api.sets.cards.learn.get({
-					setName,
-					frontToBackEnabled,
-					backToFrontEnabled,
-					mcQuestionsEnabled,
-					openQuestionsEnabled
-				})
-			])
+			const [ set, learnData ] = await Promise.all(
+				setName != null
+					? [
+						api.sets.get(setName),
+						api.sets.cards.learn.get({
+							setName,
+							frontToBackEnabled,
+							backToFrontEnabled,
+							mcQuestionsEnabled,
+							openQuestionsEnabled
+						})
+					]
+					: [
+						api.collections.get(collectionName!),
+						api.collections.cards.learn.get({
+							collectionName: collectionName!,
+							frontToBackEnabled,
+							backToFrontEnabled,
+							mcQuestionsEnabled,
+							openQuestionsEnabled
+						})
+					])
+
 			setLangFront(Lang.fromLocale(set.localeFront))
 			setLangBack(Lang.fromLocale(set.localeBack))
 			setLearnData(learnData)
@@ -185,7 +200,7 @@ export default (props: PageProps) =>
 			.map(item => item.cardId == learnItem.cardId ? { ...item, starred: !item.starred } : item)
 
 		await api.sets.cards.setStarred({
-			setName: setName,
+			setName: learnItem.setName,
 			cardId: learnItem.cardId,
 			starred: !learnItem.starred
 		})
@@ -258,7 +273,7 @@ export default (props: PageProps) =>
 		setQuestionAnswered(true)
 
 		const res = await api.sets.cards.learn.answer({
-			setName,
+			setName: learnItem.setName,
 			direction: learnItem.direction,
 			cardId: learnItem.cardId,
 			answer
@@ -272,7 +287,7 @@ export default (props: PageProps) =>
 		}
 		else
 		{
-			setWrongAnswerCardIds(wrongAnswerCardIds.add(learnItem.cardId))
+			setWrongAnswerLearnItems([ ...wrongAnswerLearnItems, learnItem ])
 		}
 
 		setCorrectAnswer(res.correctAnswer)
@@ -336,9 +351,25 @@ export default (props: PageProps) =>
 
 	const loadDifficultWords = async () =>
 	{
-		const difficultWords = await Promise.all(Array
-			.from(wrongAnswerCardIds)
-			.map(cardId => api.sets.cards.getById(setName, cardId))
+		const difficultLearnItems: Map<string, { setName: string, cardId: number }> = new Map()
+
+		for (const learnItem of wrongAnswerLearnItems)
+		{
+			const key = `${ learnItem.setName }-${ learnItem.cardId }`
+
+			if (difficultLearnItems.has(key))
+			{
+				continue
+			}
+
+			difficultLearnItems.set(key, {
+				cardId: learnItem.cardId,
+				setName: learnItem.setName
+			})
+		}
+
+		const difficultWords = await Promise.all(Array.from(difficultLearnItems.values())
+			.map(({ setName, cardId }) => api.sets.cards.getById(setName, cardId))
 		)
 
 		setDifficultWords(difficultWords)
@@ -355,7 +386,7 @@ export default (props: PageProps) =>
 			.map(word => word.id == difficultWord.id ? { ...word, starred: !word.starred } : word)
 
 		await api.sets.cards.setStarred({
-			setName: setName,
+			setName: difficultWord.setName,
 			cardId: difficultWord.id,
 			starred: !difficultWord.starred
 		})
@@ -363,13 +394,19 @@ export default (props: PageProps) =>
 		setDifficultWords(newDifficultWords)
 	}
 
+	const backUrl = setName != null
+		? `/set?name=${ setName }`
+		: `/collection?name=${ collectionName }`
+
+	const title = setName != null ? setName : collectionName!
+
 	return ( <>
 		<Helmet>
-			<title>Learn | { setName } | Flashcards</title>
+			<title>Learn | { title } | Flashcards</title>
 		</Helmet>
 
 		<Heading text='Learn' leadingIcon={
-			<ClickDetector onClick={ () => navigate(`/set?name=${ setName }`) }>
+			<ClickDetector onClick={ () => navigate(backUrl) }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} trailingIcon={

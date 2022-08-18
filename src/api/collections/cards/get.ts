@@ -4,15 +4,13 @@ import { LocalStorage } from '../../../util/storage'
 export interface ResponseModel
 {
 	id: number
-	setName: string
 	front: string
 	back: string
 	starred: boolean
-	knowledgeLevel: number
-	timesRevised: number
+	setName: string
 }
 
-export default async (setName: string, cardId: number) =>
+export default async (collectionName: string) =>
 {
 	const apiToken = LocalStorage.get('api-token')
 
@@ -23,11 +21,10 @@ export default async (setName: string, cardId: number) =>
 
 	return await request({
 		method: 'GET',
-		endpoint: '/sets/cards',
+		endpoint: '/collections/cards',
 		headers: {
 			'Authorization': apiToken,
-			'X-Set-Name': setName,
-			'X-Card-Id': cardId.toString()
+			'X-Collection-Name': collectionName
 		}
-	}) as ResponseModel
+	}) as ResponseModel[]
 }

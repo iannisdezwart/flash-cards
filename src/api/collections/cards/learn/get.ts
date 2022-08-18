@@ -3,7 +3,7 @@ import { LocalStorage } from '../../../../util/storage'
 
 export interface RequestModel
 {
-	setName: string
+	collectionName: string
 	frontToBackEnabled: boolean
 	backToFrontEnabled: boolean
 	mcQuestionsEnabled: boolean
@@ -52,10 +52,10 @@ export default async (req: RequestModel) =>
 
 	return await request({
 		method: 'GET',
-		endpoint: '/sets/cards/learn',
+		endpoint: '/collections/cards/learn',
 		headers: {
 			'Authorization': apiToken,
-			'X-Set-Name': req.setName,
+			'X-Collection-Name': req.collectionName,
 			'X-Front-To-Back-Enabled': toString(req.frontToBackEnabled),
 			'X-Back-To-Front-Enabled': toString(req.backToFrontEnabled),
 			'X-MC-Questions-Enabled': toString(req.mcQuestionsEnabled),
