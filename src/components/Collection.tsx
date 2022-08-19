@@ -9,6 +9,7 @@ import api from '../api'
 import Popup from './Popup'
 import Button from './Button'
 import Paragraph from './Paragraph'
+import HorizontalFlexbox from './HorizontalFlexbox'
 
 export interface CollectionProps
 {
@@ -86,8 +87,12 @@ export default (props: CollectionProps) =>
 				title='Are you sure?'
 				onClose={ () => setDeleteClicked(false) }
 			>
-				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteCollectionCancel }></Button>
-				<Button bgColour='#EC7272' fgColour='#fff' text='Delete collection' onClick={ deleteCollectionConfirm }></Button>
+				<HorizontalFlexbox>
+					<Button bgColour='#88AD64' fgColour='#fff' text='Cancel'
+						onClick={ deleteCollectionCancel }></Button>
+					<Button bgColour='#EC7272' fgColour='#fff' text='Delete collection'
+						onClick={ deleteCollectionConfirm }></Button>
+				</HorizontalFlexbox>
 			</Popup>
 		</div>
 	)

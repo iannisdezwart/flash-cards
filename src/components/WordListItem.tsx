@@ -14,6 +14,7 @@ import { classNames } from '../util/class-names'
 import ClickDetector from './ClickDetector'
 import api from '../api'
 import SuggestedWordList from './SuggestedWordList'
+import HorizontalFlexbox from './HorizontalFlexbox'
 
 interface Card
 {
@@ -246,8 +247,10 @@ export default (props: WordListItemProps) =>
 			onClose={ deleteWordCancel }
 			title='Are you sure?'
 		>
-			<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteWordCancel }></Button>
-			<Button bgColour='#EC7272' fgColour='#fff' text='Delete word' onClick={ deleteWordConfirm }></Button>
+			<HorizontalFlexbox>
+				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ deleteWordCancel }></Button>
+				<Button bgColour='#EC7272' fgColour='#fff' text='Delete word' onClick={ deleteWordConfirm }></Button>
+			</HorizontalFlexbox>
 		</Popup>
 	</> )
 }
