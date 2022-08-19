@@ -24,7 +24,7 @@ export default (props: PageProps) =>
 	{
 		if (setName == null)
 		{
-			navigate('/sets')
+			navigate('/sets/')
 		}
 	})
 
@@ -39,17 +39,17 @@ export default (props: PageProps) =>
 
 	const navigateToFlashcards = () =>
 	{
-		navigate(`/flashcards?set=${ setName }`)
+		navigate(`/flashcards/?set=${ setName }`)
 	}
 
 	const navigateToLearn = () =>
 	{
-		navigate(`/learn?set=${ setName }`)
+		navigate(`/learn/?set=${ setName }`)
 	}
 
 	const navigateToTest = () =>
 	{
-		navigate(`/test?set=${ setName }`)
+		navigate(`/test/?set=${ setName }`)
 	}
 
 	const onWordListLoad = (setProps: { langFront: Lang, langBack: Lang }) =>
@@ -69,7 +69,7 @@ export default (props: PageProps) =>
 
 		await api.sets.rename(setName, title)
 
-		navigate(`/set?name=${ title }`)
+		navigate(`/set/?name=${ title }`)
 	}
 
 	return ( <>
@@ -78,7 +78,7 @@ export default (props: PageProps) =>
 		</Helmet>
 
 		<Heading text={ setName } leadingIcon={
-			<ClickDetector onClick={ () => navigate('/sets') }>
+			<ClickDetector onClick={ () => navigate('/sets/') }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} trailingIcon={

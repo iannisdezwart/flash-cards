@@ -23,7 +23,7 @@ export default () =>
 		try
 		{
 			await api.auth.login(username, password)
-			navigate('/home')
+			navigate('/home/')
 		}
 		catch (err)
 		{

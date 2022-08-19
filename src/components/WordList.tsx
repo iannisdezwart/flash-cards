@@ -11,6 +11,8 @@ import api from '../api'
 import Popup from './Popup'
 import * as styles from './WordList.module.sass'
 import Paragraph from './Paragraph'
+import VerticalFlexbox from './VerticalFlexbox'
+import Button from './Button'
 
 interface Word
 {
@@ -199,6 +201,15 @@ export default (props: WordListProps) =>
 				/>
 			)) }
 		</DraggableList>
+
+		<VerticalFlexbox>
+			<Button
+				text='Add word'
+				bgColour='#88AD64'
+				fgColour='#F7FFEF'
+				onClick={ addWord }
+			/>
+		</VerticalFlexbox>
 
 		<Popup
 			visible={ loadSetError != null }

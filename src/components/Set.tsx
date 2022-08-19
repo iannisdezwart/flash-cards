@@ -50,7 +50,7 @@ export default (props: SetProps) =>
 
 	const openSet = () =>
 	{
-		navigate(`/set?name=${ props.name }`)
+		navigate(`/set/?name=${ props.name }`)
 	}
 
 	return (

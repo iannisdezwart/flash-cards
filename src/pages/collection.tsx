@@ -31,7 +31,7 @@ export default (props: PageProps) =>
 	{
 		if (collectionName == null)
 		{
-			navigate('/collections')
+			navigate('/collections/')
 		}
 	}, [])
 
@@ -70,22 +70,22 @@ export default (props: PageProps) =>
 			newCollectionName: title
 		})
 
-		navigate(`/collection?name=${ title }`)
+		navigate(`/collection/?name=${ title }`)
 	}
 
 	const navigateToFlashcards = () =>
 	{
-		navigate(`/flashcards?collection=${ collectionName }`)
+		navigate(`/flashcards/?collection=${ collectionName }`)
 	}
 
 	const navigateToLearn = () =>
 	{
-		navigate(`/learn?collection=${ collectionName }`)
+		navigate(`/learn/?collection=${ collectionName }`)
 	}
 
 	const navigateToTest = () =>
 	{
-		navigate(`/test?collection=${ collectionName }`)
+		navigate(`/test/?collection=${ collectionName }`)
 	}
 
 	return ( <>
@@ -94,7 +94,7 @@ export default (props: PageProps) =>
 		</Helmet>
 
 		<Heading text={ collectionName } leadingIcon={
-			<ClickDetector onClick={ () => navigate('/collections') }>
+			<ClickDetector onClick={ () => navigate('/collections/') }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} trailingIcon={

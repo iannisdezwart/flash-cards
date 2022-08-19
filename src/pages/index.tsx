@@ -16,18 +16,18 @@ export default () =>
 			{
 				if (await validateToken())
 				{
-					navigate('/home')
+					navigate('/home/')
 				}
 				else
 				{
 					LocalStorage.remove('api-token')
-					navigate('/login')
+					navigate('/login/')
 				}
 			})()
 		}
 		else
 		{
-			navigate('/login')
+			navigate('/login/')
 		}
 	}, [])
 

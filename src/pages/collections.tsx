@@ -12,7 +12,7 @@ import { navigate } from 'gatsby'
 export default () => {
 	const addCollection = () =>
 	{
-		navigate('/new-collection')
+		navigate('/new-collection/')
 	}
 
 	return ( <>
@@ -22,7 +22,7 @@ export default () => {
 
 		<Heading text='Collections'
 			leadingIcon={
-				<ClickDetector onClick={ () => navigate('/home') }>
+				<ClickDetector onClick={ () => navigate('/home/') }>
 					<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 				</ClickDetector>
 			}

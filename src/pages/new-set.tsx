@@ -59,7 +59,7 @@ export default () =>
 				localeBack: langBack.locale,
 				cards: words
 			})
-			navigate('/sets')
+			navigate('/sets/')
 		}
 		catch (err)
 		{
@@ -108,13 +108,13 @@ export default () =>
 
 		<Popup
 			visible={ backClicked }
-			onClose={ () => navigate('/sets') }
+			onClose={ () => navigate('/sets/') }
 			title='Are you sure?'
 		>
 			<Paragraph colour='#CBD1DC' align='center' text='If you go back, the new set will not be saved.' />
 			<HorizontalFlexbox>
 				<Button bgColour='#88AD64' fgColour='#fff' text='Cancel' onClick={ () => setBackClicked(false) }></Button>
-				<Button bgColour='#EC7272' fgColour='#fff' text='Discard set' onClick={ () => navigate('/sets') }></Button>
+				<Button bgColour='#EC7272' fgColour='#fff' text='Discard set' onClick={ () => navigate('/sets/') }></Button>
 			</HorizontalFlexbox>
 		</Popup>
 

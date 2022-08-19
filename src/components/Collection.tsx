@@ -52,7 +52,7 @@ export default (props: CollectionProps) =>
 
 	const openCollection = () =>
 	{
-		navigate(`/collection?name=${ props.name }`)
+		navigate(`/collection/?name=${ props.name }`)
 	}
 
 	return (

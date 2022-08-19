@@ -48,7 +48,7 @@ export default () =>
 				localeFront: langFront.locale,
 				localeBack: langBack.locale
 			})
-			navigate('/collections')
+			navigate('/collections/')
 		}
 		catch (err)
 		{
@@ -62,7 +62,7 @@ export default () =>
 		</Helmet>
 
 		<Heading text='New collection' leadingIcon={
-			<ClickDetector onClick={ () => navigate('/collections') }>
+			<ClickDetector onClick={ () => navigate('/collections/') }>
 				<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 			</ClickDetector>
 		} />

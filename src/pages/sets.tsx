@@ -22,7 +22,7 @@ export default () => {
 
 		<Heading text='Sets'
 			leadingIcon={
-				<ClickDetector onClick={ () => navigate('/home') }>
+				<ClickDetector onClick={ () => navigate('/home/') }>
 					<SvgIcon Icon={ BackIcon } width={ 32 } height={ 32 } />
 				</ClickDetector>
 			}

@@ -27,8 +27,8 @@ export default () =>
 			<Heading text='Flash cards' />
 
 			<ActionList>
-				<ActionListItem size='big' icon={ SetsIcon } text='Sets' action={ () => navigate('/sets') } />
-				<ActionListItem size='big' icon={ CollectionsIcon } text='Collections' action={ () => navigate('/collections') } />
+				<ActionListItem size='big' icon={ SetsIcon } text='Sets' action={ () => navigate('/sets/') } />
+				<ActionListItem size='big' icon={ CollectionsIcon } text='Collections' action={ () => navigate('/collections/') } />
 			</ActionList>
 
 			<Button text='Log out' fgColour='#FFFFFF' bgColour='#EC7272' onClick={ logOut } />

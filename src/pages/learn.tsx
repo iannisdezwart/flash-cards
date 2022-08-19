@@ -36,7 +36,7 @@ export default (props: PageProps) =>
 	{
 		if (setName == null && collectionName == null)
 		{
-			navigate('/sets')
+			navigate('/sets/')
 		}
 	}, [])
 
@@ -395,8 +395,8 @@ export default (props: PageProps) =>
 	}
 
 	const backUrl = setName != null
-		? `/set?name=${ setName }`
-		: `/collection?name=${ collectionName }`
+		? `/set/?name=${ setName }`
+		: `/collection/?name=${ collectionName }`
 
 	const title = setName != null ? setName : collectionName!
 
