@@ -13,6 +13,7 @@ import * as styles from './WordList.module.sass'
 import Paragraph from './Paragraph'
 import VerticalFlexbox from './VerticalFlexbox'
 import Button from './Button'
+import Padding from './Padding'
 
 interface Word
 {
@@ -202,10 +203,12 @@ export default (props: WordListProps) =>
 			)) }
 		</DraggableList>
 
+		<Padding vertical={ 16 } />
+
 		<VerticalFlexbox>
 			<Button
 				text='Add word'
-				bgColour='#88AD64'
+				bgColour='#3C8DEC'
 				fgColour='#F7FFEF'
 				onClick={ addWord }
 			/>
