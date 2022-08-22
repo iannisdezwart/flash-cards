@@ -288,6 +288,17 @@ export default (props: PageProps) =>
 		else
 		{
 			setWrongAnswerLearnItems([ ...wrongAnswerLearnItems, learnItem ])
+
+			const newLearnItems = learnData!.items.slice()
+			const insertIndex = Math.floor(Math.random() * (newLearnItems.length - learnItemIndex)) + learnItemIndex + 1
+			newLearnItems.splice(insertIndex, 0, learnItem)
+
+			console.log(newLearnItems.length, insertIndex)
+
+			setLearnData({
+				items: newLearnItems,
+				numCards: learnData!.numCards,
+			})
 		}
 
 		setCorrectAnswer(res.correctAnswer)
@@ -300,6 +311,7 @@ export default (props: PageProps) =>
 
 	const nextQuestion = () =>
 	{
+		console.log(learnData)
 		if (learnItemIndex == learnData!.items.length - 1)
 		{
 			setRoundFinished(true)
