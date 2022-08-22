@@ -1,0 +1,68 @@
+.radio-button-group
+	display: flex
+
+	.label-container
+		display: flex
+		justify-content: center
+		align-items: center
+
+		label
+			font-weight: 600
+			font-size: 12px
+			color: #67696C
+			writing-mode: vertical-lr
+			transform: rotate(180deg)
+
+		&::after
+			content: ''
+			width: 2px
+			height: 100%
+			margin-right: 8px
+			background-color: #67696C
+
+	.buttons
+		display: flex
+		flex-direction: column
+
+		label
+			display: flex
+			align-items: center
+
+			cursor: pointer
+			font-size: 20px
+			color: #CBD1DC
+
+			input
+				position: absolute
+				opacity: 0
+
+			.checkmark
+				position: relative
+				display: inline-block
+				width: 28px
+				height: 28px
+				border-radius: 50%
+				background-color: #232328
+				margin: 4px 0
+				margin-right: 8px
+
+				&:after
+					content: ''
+					position: absolute
+					left: 50%
+					top: 50%
+					transform: translate(-50%, -50%)
+					border-radius: 50%
+
+					opacity: 0
+					visibility: hidden
+					transition: opacity 150ms ease-in-out, visibility 150ms ease-in-out
+
+					width: 16px
+					height: 16px
+					background-color: #3C8DEC
+					box-shadow: 1px 1px 8px #434E5B
+
+			input:checked ~ .checkmark:after
+				opacity: 1
+				visibility: visible

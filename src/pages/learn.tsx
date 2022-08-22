@@ -25,6 +25,8 @@ import FlashCard from '../components/FlashCard'
 import Checkbox from '../components/Checkbox'
 import Button from '../components/Button'
 import HorizontalFlexbox from '../components/HorizontalFlexbox'
+import { LocalStorage } from '../util/storage'
+import RadioButtonGroup from '../components/RadioButtonGroup'
 
 export default (props: PageProps) =>
 {
@@ -65,11 +67,13 @@ export default (props: PageProps) =>
 	const [ difficultWords, setDifficultWords ] = useState<DetailedCard[]>()
 
 	const [ settingsOpen, _setSettingsOpen ] = useState(false)
-	const [ settingChanged, setSettingChanged ] = useState(false)
-	const [ frontToBackEnabled, _setFrontToBackEnabled ] = useState(true)
-	const [ backToFrontEnabled, _setBackToFrontEnabled ] = useState(true)
-	const [ mcQuestionsEnabled, _setMcQuestionsEnabled ] = useState(true)
-	const [ openQuestionsEnabled, _setOpenQuestionsEnabled ] = useState(true)
+	const [ hasToReload, setHasToReload ] = useState(false)
+	const [ frontToBackEnabled, _setFrontToBackEnabled ] = useState(Boolean(LocalStorage.getOrDefault('learn::front-to-back-enabled', true)))
+	const [ backToFrontEnabled, _setBackToFrontEnabled ] = useState(Boolean(LocalStorage.getOrDefault('learn::back-to-front-enabled', true)))
+	const [ mcQuestionsEnabled, _setMcQuestionsEnabled ] = useState(Boolean(LocalStorage.getOrDefault('learn::mc-questions-enabled', true)))
+	const [ openQuestionsEnabled, _setOpenQuestionsEnabled ] = useState(Boolean(LocalStorage.getOrDefault('learn::open-questions-enabled', true)))
+	const [ ttsEnabled, _setTtsEnabled ] = useState(Boolean(LocalStorage.getOrDefault('learn::tts-enabled', true)))
+	const [ ttsGender, _setTtsGender ] = useState(LocalStorage.getOrDefault('learn::tts-gender', 'male'))
 
 	const nextRound = () =>
 	{
@@ -93,7 +97,7 @@ export default (props: PageProps) =>
 
 	const setSettingsOpen = (value: boolean) =>
 	{
-		setSettingChanged(false)
+		setHasToReload(false)
 		_setSettingsOpen(value)
 	}
 
@@ -107,7 +111,7 @@ export default (props: PageProps) =>
 
 		setSettingsOpen(false)
 
-		if (settingChanged)
+		if (hasToReload)
 		{
 			nextRound()
 		}
@@ -127,26 +131,42 @@ export default (props: PageProps) =>
 
 	const setFrontToBackEnabled = (enabled: boolean) =>
 	{
-		setSettingChanged(true)
+		setHasToReload(true)
+		LocalStorage.set('learn::front-to-back-enabled', enabled.toString())
 		_setFrontToBackEnabled(enabled)
 	}
 
 	const setBackToFrontEnabled = (enabled: boolean) =>
 	{
-		setSettingChanged(true)
+		setHasToReload(true)
+		LocalStorage.set('learn::back-to-front-enabled', enabled.toString())
 		_setBackToFrontEnabled(enabled)
 	}
 
 	const setMcQuestionsEnabled = (enabled: boolean) =>
 	{
-		setSettingChanged(true)
+		setHasToReload(true)
+		LocalStorage.set('learn::mc-questions-enabled', enabled.toString())
 		_setMcQuestionsEnabled(enabled)
 	}
 
 	const setOpenQuestionsEnabled = (enabled: boolean) =>
 	{
-		setSettingChanged(true)
+		setHasToReload(true)
+		LocalStorage.set('learn::open-questions-enabled', enabled.toString())
 		_setOpenQuestionsEnabled(enabled)
+	}
+
+	const setTtsEnabled = (enabled: boolean) =>
+	{
+		LocalStorage.set('learn::tts-enabled', enabled.toString())
+		_setTtsEnabled(enabled)
+	}
+
+	const setTtsGender = (choice: string) =>
+	{
+		LocalStorage.set('learn::tts-gender', choice)
+		_setTtsGender(choice)
 	}
 
 	const loadLearnItems = async () =>
@@ -215,6 +235,7 @@ export default (props: PageProps) =>
 		<SmallFlashcard
 			text={ learnItem.question }
 			lang={ learnItem.direction == 'front' ? langFront! : langBack! }
+			ttsGender={ ttsGender }
 			starred={ learnItem.starred }
 			onToggleStar={ () => toggleStarLearnItem(learnItem) }
 		/>
@@ -232,6 +253,7 @@ export default (props: PageProps) =>
 		<SmallFlashcard
 			text={ learnItem.question }
 			lang={ learnItem.direction == 'front' ? langFront! : langBack! }
+			ttsGender={ ttsGender }
 			starred={ learnItem.starred }
 			onToggleStar={ () => toggleStarLearnItem(learnItem) }
 		/>
@@ -250,7 +272,8 @@ export default (props: PageProps) =>
 		{
 			speak({
 				text: learnItem.question,
-				lang: learnItem.direction == 'front' ? langFront! : langBack!
+				lang: learnItem.direction == 'front' ? langFront! : langBack!,
+				gender: ttsGender
 			})
 			setSpoken(true)
 		}
@@ -293,8 +316,6 @@ export default (props: PageProps) =>
 			const insertIndex = Math.floor(Math.random() * (newLearnItems.length - learnItemIndex)) + learnItemIndex + 1
 			newLearnItems.splice(insertIndex, 0, learnItem)
 
-			console.log(newLearnItems.length, insertIndex)
-
 			setLearnData({
 				items: newLearnItems,
 				numCards: learnData!.numCards,
@@ -311,7 +332,6 @@ export default (props: PageProps) =>
 
 	const nextQuestion = () =>
 	{
-		console.log(learnData)
 		if (learnItemIndex == learnData!.items.length - 1)
 		{
 			setRoundFinished(true)
@@ -571,6 +591,22 @@ export default (props: PageProps) =>
 				{ !mcQuestionsEnabled && !openQuestionsEnabled &&
 					<Paragraph colour='#EC7272' align='center' text='Please select a question type' />
 				}
+
+				<Padding vertical={ 24 } />
+
+				<Heading text='Text-to-speech' size={ 0.875 } colour='#67696C' align='start' />
+				<Checkbox
+					default={ ttsEnabled }
+					label='Automatic text-to-speech'
+					onChange={ checked => setTtsEnabled(checked) }
+				/>
+				<Padding vertical={ 8 } />
+				<RadioButtonGroup
+					default={ ttsGender }
+					label='Gender'
+					onChange={ choice => setTtsGender(choice) }
+					options={ [ 'male', 'female', 'random' ] }
+				/>
 
 				<Padding vertical={ 24 } />
 

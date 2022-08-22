@@ -10,6 +10,19 @@ export class LocalStorage
 		return null
 	}
 
+	static getOrDefault(key: string, defaultValue: any)
+	{
+		const value = LocalStorage.get(key)
+
+		if (value == null)
+		{
+			LocalStorage.set(key, defaultValue)
+			return defaultValue
+		}
+
+		return value
+	}
+
 	static set(key: string, value: string)
 	{
 		if (typeof localStorage != 'undefined')

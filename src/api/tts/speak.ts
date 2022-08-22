@@ -1,11 +1,13 @@
 import { Locale } from '../../util/langs'
 import { request } from '../../util/request'
 
-interface RequestModel
+export type TtsGender = 'male' | 'female' | 'random'
+
+export interface RequestModel
 {
 	text: string
 	locale: Locale
-	gender?: 'male' | 'female'
+	gender?: TtsGender
 }
 
 export default async (req: RequestModel) =>

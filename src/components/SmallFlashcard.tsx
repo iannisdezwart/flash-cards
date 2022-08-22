@@ -5,11 +5,13 @@ import StarIcon from '../icons/star.svg'
 import SpeakerIcon from '../icons/speaker.svg'
 import { speak } from '../util/speak'
 import * as styles from './SmallFlashCard.module.sass'
+import { TtsGender } from '../api/tts/speak'
 
 interface SmallFlashcardProps
 {
 	text: string
 	lang: Lang
+	ttsGender: TtsGender
 	starred: boolean
 	onToggleStar: () => void
 }
@@ -20,7 +22,8 @@ export default (props: SmallFlashcardProps) =>
 	{
 		speak({
 			lang: props.lang,
-			text: props.text
+			text: props.text,
+			gender: props.ttsGender
 		})
 	}
 
