@@ -73,7 +73,7 @@ export default (props: FlashCardProps) =>
 					{ props.starred
 						? <ActiveStarIcon className={ styles.button } width='24' height='24' onClick={ star } />
 						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
-					<p>{ props.front.text }</p>
+					<p className={ styles.cardText }>{ props.front.text }</p>
 					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ handleSpeak } />
 					{ props.details &&
 						<div className={ styles.details }>
@@ -89,7 +89,7 @@ export default (props: FlashCardProps) =>
 					{ props.starred
 						? <ActiveStarIcon className={ styles.button } width='24' height='24' onClick={ star } />
 						: <StarIcon className={ styles.button } width='24' height='24' onClick={ star } /> }
-					<p>{ props.back.text }</p>
+					<p className={ styles.cardText }>{ props.back.text }</p>
 					<SpeakerIcon className={ styles.button } width='24' height='24' onClick={ handleSpeak } />
 					{ props.details &&
 						<div className={ styles.details }>

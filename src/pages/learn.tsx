@@ -7,7 +7,7 @@ import { FillInTheBlankLearnItem, MultipleChoiceLearnItem, ResponseModel as Lear
 import FloatingButton from '../components/FloatingButton'
 import ArrowRight from '../icons/arrow-right-light-green.svg'
 import { Lang } from '../util/langs'
-import SmallFlashcard from '../components/SmallFlashcard'
+import SmallFlashcard from '../components/SmallFlashCard'
 import MultipleChoiceAnswer from '../components/MultipleChoiceAnswer'
 import FillInTheBlankAnswer from '../components/FillInTheBlankAnswer'
 import Popup from '../components/Popup'
@@ -495,7 +495,7 @@ export default (props: PageProps) =>
 			<p style={{ color: '#67696C', margin: '.25rem' }}>
 				<span style={{ fontWeight: 600 }}>Correct answers</span>:
 				&nbsp;
-				<span style={{ color: '#CBD1DC' }}>{ numCorrectAnswers }</span>
+				<span style={{ color: '#CBD1DC' }}>{ numCorrectAnswers }/{ learnData!.items.length }</span>
 			</p>
 
 			<Padding vertical={ 24 } />
